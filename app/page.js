@@ -1,7 +1,7 @@
 import Image from "next/image";
-import StatCards from "./components/dashboard/StatCards";
+import StatCards from "../components/dashboard/StatCards";
 import { SiSpeedtest } from "react-icons/si";
-import Priority from "./components/dashboard/Priority";
+import Priority from "../components/dashboard/Priority";
 
 export default function Home() {
   return (

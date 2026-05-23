@@ -43,7 +43,7 @@ const Priority = ({ clientName = "client", priorityStatus = "მაღალი"
               საიტის დიზაინი
             </p>
             <p className="p-1.5 bg-green-400/30 text-green-600 font-medium rounded-md text-xs">
-              მაღალი
+              დაბალი
             </p>
           </div>
           <div className="flex justify-between items-center">
@@ -68,8 +68,8 @@ const Priority = ({ clientName = "client", priorityStatus = "მაღალი"
             <p className="font-semibold text-sm text-zinc-800">
               საიტის დიზაინი
             </p>
-            <p className="p-1.5 bg-red-400/30 text-red-600 font-medium rounded-md text-xs">
-              მაღალი
+            <p className="p-1.5 bg-yellow-400/30 text-yellow-600 font-medium rounded-md text-xs">
+              საშუალო
             </p>
           </div>
           <div className="flex justify-between items-center">
