@@ -1,71 +1,141 @@
-import React from 'react'
-import { IoMdSettings } from 'react-icons/io'
-
-const Table = () => {
-
-    const clientInfo = [
-        {
-            id:1,
-            name:"Nova Building corp",
-            email:"NovaBuilding@gmail.com",
-            status:"მუშაობის პროცესში",
-            notes:"ცინიკური დამოკიდებულება",
-            created_at:"22.05.2026",
-            updated_at:"24.05.2026" 
-        },
-        {
-            id:2,
-            name:"Dental Clinic SUPO",
-            email:"ClinicSUPO@gmail.com",
-            status:"დასრულებულია",
-            notes:"შესაძლებელია ახალ პროექტებზე მუშაობა",
-            created_at:"22.05.2026",
-            updated_at:"24.05.2026"   
-        },
-        {
-            id:3,
-            name:"Travel Mountains Org",
-            email:"TravelMountains@gmail.com",
-            status:"განსახილველი",
-            notes:"მზარდი კომპანია",
-            created_at:"22.05.2026",
-            updated_at:"24.05.2026" 
-        }
-    ]
+"use client"
 
 
-    const tableInfo = ["","N" , "კლიენტი/ორგანიზაცია" , "ელფოსტა", "სტატუსი" , "კომენტარები" , "დამატებულია", "განახლებულია", ]
+import React, { useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { CiCalendar, CiSearch } from "react-icons/ci";
+import { GrStatusUnknown } from "react-icons/gr";
+import { IoIosBusiness, IoMdArrowDropdown } from "react-icons/io";
+import { IoMailOutline } from "react-icons/io5";
+import { LiaIndustrySolid } from "react-icons/lia";
+import { LuBookCheck, LuNotebook } from "react-icons/lu";
+import { RxAvatar } from "react-icons/rx";
+import Button from "../buttons/Button";
+import { TfiReload } from "react-icons/tfi";
+import { FaPlus } from "react-icons/fa";
+import AddClientModal from "./AddClientModal";
+
+const Table = ({clientInfo}) => {
+
+  const [open, setOpen] = useState(false)
+
+  const tableInfo = [
+    { name: "კლიენტის სახელი", icon: RxAvatar, downArrow: IoMdArrowDropdown },
+    { name: "კომპანია", icon: IoIosBusiness, downArrow: IoMdArrowDropdown },
+    { name: "ინდუსტრია", icon: LiaIndustrySolid, downArrow: IoMdArrowDropdown },
+    { name: "პროექტი", icon: LuBookCheck, downArrow: IoMdArrowDropdown },
+    { name: "ელფოსტა", icon: IoMailOutline, downArrow: IoMdArrowDropdown },
+    { name: "სტატუსი", icon: GrStatusUnknown, downArrow: IoMdArrowDropdown },
+    { name: "პროექტის აღწერა", icon: LuNotebook, downArrow: IoMdArrowDropdown },
+    { name: "დამატებულია", icon: CiCalendar, downArrow: IoMdArrowDropdown },
+    {
+      name: "",
+      icon: null,
+      downArrow: null,
+    },
+  ];
 
   return (
- <table className='w-full'>
-  <thead >
-    <tr >
-      {tableInfo.map((header) => (
-        <th key={header} className='not-first:border border-zinc-400 text-left p-2 '>{header}</th>
-      ))}
-    </tr>
-  </thead>
-  <tbody>
+    <>
+    {/* -------- Modal ---------- */}
+{open && <AddClientModal onClose={() => setOpen(false)} />}
 
-        {clientInfo.map((info) => (
-    <tr key={info.id} className=''>
-        <td className=' p-2  text-gray-400 border text-center '>
-    <IoMdSettings  className='cursor-pointer'/>
-  </td>
-            <td className='border border-zinc-400 p-2'>{info.id}</td>
-            <td className='border border-zinc-400 p-2'>{info.name}</td>
-            <td className='border border-zinc-400 p-2'>{info.email}</td>
-            <td className='border border-zinc-400 p-2'>{info.status}</td>
-            <td className='border border-zinc-400 p-2'>{info.notes}</td>
-            <td className='border border-zinc-400 p-2'>{info.created_at}</td>
-            <td className='border border-zinc-400 p-2'>{info.updated_at}</td>
-        
-     </tr>
-        ))}
-   
-  </tbody>
-</table>
-  )
-}
+{/* Search & Add Client Button */}
 
-export default Table
+<div className="py-5 px-4 flex justify-between">
+  <div className="flex items-center w-full justify-between max-w-115">
+  <div className="relative flex items-center">
+  <CiSearch className="absolute left-2 text-zinc-400" size={20} />
+  <input
+    placeholder="მოძებნა..."
+    className="pl-8 pr-2 py-1.5 min-w-70 border border-zinc-400 rounded-md"
+  />
+</div>
+
+ <hr className="h-5 border-l border-zinc-400 w-0" />
+
+
+   <Button content={"განახლება"} action={null} icon={<TfiReload/>}/>
+</div>
+
+<button onClick={() => setOpen(true)} className="flex items-center gap-3 bg-emerald-500 text-white font-medium px-3.5 py-2.5 rounded-lg cursor-pointer hover:opacity-85"><FaPlus />
+კლიენტის დამატება</button>
+
+</div>
+
+
+
+
+      {/*--------------- Table ------------- */}
+
+      <table className="w-full">
+        <thead>
+          <tr>
+            {tableInfo.map((header) => {
+              const Icon = header.icon;
+              const ArrowIcon = header.downArrow;
+
+              return (
+                <th
+                  key={header.name}
+                  className="border-b border-zinc-400 text-left px-2 py-2 text-[15px]"
+                >
+                  <span className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      {Icon && <Icon size={17} />}
+                      {header.name}
+                    </div>
+                    {header.downArrow && (
+                      <ArrowIcon size={17} className="text-zinc-400" />
+                    )}
+                  </span>
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody >
+          {clientInfo.map((info) => (
+            <tr key={info.id} className="text-[15px] text-zinc-700 font-medium">
+              <td className="border-t border-b border-zinc-400 p-2">
+                {info.name}
+              </td>
+              <td className="border-t border-b border-zinc-400 p-2">
+                {info.company}
+              </td>
+              <td className="border-t border-b border-zinc-400 p-2">
+                {info.industry}
+              </td>
+
+              <td className="border-t border-b border-zinc-400 p-2">
+                {info.project}
+              </td>
+
+              <td className="border-t border-b border-zinc-400 p-2">
+                {info.email}
+              </td>
+              <td className="border-t border-b border-zinc-400 p-2 bg-emerald-500/10 text-emerald-500 text-center">
+                {info.status}
+              </td>
+              <td className="border-t border-b border-zinc-400 p-2">
+                {info.notes}
+              </td>
+              <td className="border-t border-b border-zinc-400 p-2">
+                {info.created_at}
+              </td>
+              <td className="border-t border-b border-zinc-400 p-2 text-center">
+                {" "}
+                <BsThreeDotsVertical
+                  size={30}
+                  className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+};
+
+export default Table;
