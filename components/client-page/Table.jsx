@@ -143,7 +143,7 @@ const Table = ({clientInfo}) => {
                   className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
                 />
 
-              {optionBox === info.id && (<div className="bg-white border border-zinc-400 absolute right-5 z-10 text-[16px] flex flex-col">
+              {optionBox === info.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col">
                   <button onClick={() => { setSelectedClient(info); setOpenEdit(true); }} className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer" ><FiEdit /> რედაქტირება</button>
                   <button onClick={() => {deleteClient(info.id)}}  className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"><MdDelete /> წაშლა</button>
                 </div> )}  
