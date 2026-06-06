@@ -19,7 +19,27 @@ const stats = [
   { name: "დრაფტი",        stat: 10 },
 ];
 
-
+const task = [
+{ uniqueCode:"#-321451",
+    title:"ანიმაციების ჩაშენება",
+    descritpion:"მომხმარებელს ჭირდება ანიმაციების ჩაშენება about გვერდზე, კომპონენტები შემოვიდეს მარჯვნიდან მარცხნივ და სათაურები ქვემოდან ზემოთ",
+    assigned:"Anri begeladze",
+    priority:"მაღალი",
+    created:"6 ივნისი 2026",
+    expiring:"7 ივნისი 2026 / 2 დღე",
+    author:"Anri begeladze"
+   },
+   { uniqueCode:"#-321451",
+    title:"ანიმაციების ჩაშენება",
+    descritpion:"მომხმარებელს ჭირდება ანიმაციების ჩაშენება about გვერდზე, კომპონენტები შემოვიდეს მარჯვნიდან მარცხნივ და სათაურები ქვემოდან ზემოთ",
+    assigned:"Anri begeladze",
+    priority:"მაღალი",
+    created:"6 ივნისი 2026",
+    expiring:"7 ივნისი 2026 / 2 დღე",
+    author:"Anri begeladze"
+   }
+ 
+]
 
 const page = () => {
 
@@ -40,7 +60,14 @@ const page = () => {
 ))}
     </div>
 
-    <Table />
+    <Table title={"შესასრულებელი"} taskData={task}  headingNumBgColor={" rgba(59, 130, 246, 0.08) "} headingNumColor={"#3b82f6"}/>
+    <Table title={"პროცესშია"} taskData={task} headingNumBgColor={" rgba(245, 158, 11, 0.08)"} headingNumColor={" #f59e0b"}/>
+    <Table title={"შესრულებული"} taskData={task} headingNumBgColor={" rgba(34, 197, 94, 0.08) "} headingNumColor={"#22c55e"}/>
+    <Table title={"გადაცდა"} taskData={task} headingNumBgColor={" rgba(239, 68, 68, 0.08)"} headingNumColor={" #ef4444"}/>
+    <Table title={"დრაფტი"} taskData={task} headingNumBgColor={"rgba(168, 85, 247, 0.08) "} headingNumColor={"#a855f7"}/>
+    
+
+
     </>
   )
 }
