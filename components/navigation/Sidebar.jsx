@@ -18,11 +18,6 @@ const navLinks = [
     link:"/deals" ,
     icon:RiMoneyDollarCircleFill
   },
-  { name:"მიზნები",
-    link:"/goals" ,
-    icon:GoGoal 
-  },
-
 ]
 
 const Sidebar = () => {
