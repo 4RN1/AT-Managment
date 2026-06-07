@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
+// icons
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CiCalendar, CiSearch } from "react-icons/ci";
 import { GrStatusUnknown } from "react-icons/gr";
@@ -9,14 +10,16 @@ import { IoMailOutline } from "react-icons/io5";
 import { LiaIndustrySolid } from "react-icons/lia";
 import { LuBookCheck, LuNotebook } from "react-icons/lu";
 import { RxAvatar } from "react-icons/rx";
-import Button from "../buttons/Button";
 import { TfiReload } from "react-icons/tfi";
 import { FaPlus } from "react-icons/fa";
-import AddClientModal from "./AddClientModal";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
+// ----------------------------
+
+import Button from "../buttons/Button";
+import AddClientModal from "./AddClientModal";
 import EditClientModal from "./EditClientModal";
-import { deleteClient } from "@/action/ClientActions";
+import {deleteInfo } from "@/action/ClientActions";
 
 const Table = ({clientInfo}) => {
 
@@ -144,7 +147,7 @@ const Table = ({clientInfo}) => {
 
               {optionBox === info.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col">
                   <button onClick={() => { setSelectedClient(info); setOpenEdit(true); }} className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer" ><FiEdit /> რედაქტირება</button>
-                  <button onClick={() => {deleteClient(info.id)}}  className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"><MdDelete /> წაშლა</button>
+                  <button onClick={() => {deleteInfo( "clients", info.id, "/clients")}}  className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"><MdDelete /> წაშლა</button>
                 </div> )}  
               </td>
             </tr>

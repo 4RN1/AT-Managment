@@ -4,67 +4,54 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-
-
-
-export const addClient = async (formData) => {
+// getting cookies
+const getSupabase = async () => {
   const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+  return createClient(cookieStore);
+};
 
-  
-
-  const { error } = await supabase.from("clients").insert({
-    name: formData.get("name"),
-    company: formData.get("company"),
-    industry: formData.get("industry"),
-    project: formData.get("project"),
-    email: formData.get("email"),
-    status: formData.get("status"),
-    notes: formData.get("notes"),
-
-  });
-
-  if(error) throw new Error(error.message)
-
-    revalidatePath("/clients")
+// GET DATA
+export const get = async (table, columns = "*") => {
+  const supabase = await getSupabase();
+  const { data: result, error } = await supabase.from(table).select(columns);
+  if (error) throw new Error(error.message);
+  return result;
 };
 
 
-export const editClient = async (formData) => {
-  const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
+// ADD DATA
+export const add = async (table, formData, path) => {
+  const supabase = await getSupabase();
+  const { error } = await supabase.from(table).insert(formData);
+  if (error) throw new Error(error.message);
+  revalidatePath(path);
+};
+
+// EDIT DATA
+export const edit = async (table, formData, path) => {
+  const supabase = await getSupabase();
   const { error } = await supabase
-  .from('clients')
-  .update({ 
-    name: formData.name,
-    company: formData.company,
-    industry: formData.industry,
-    project: formData.project,
-    email: formData.email,
-    status: formData.status,
-    notes: formData.notes,
-  })
-  .eq("id", formData.id)
+    .from(table)
+    .update(formData)
+    .eq("id", formData.id);
 
-  if(error) throw new Error(error.message)
+  if (error) throw new Error(error.message);
+  revalidatePath(path);
+};
 
-    revalidatePath("/clients")
+// DELETE DATA
 
-}
+export const deleteInfo = async (table, id, path) => {
+  const supabase = await getSupabase();
+  const { error } = await supabase.from(table).delete().eq("id", id);
 
-export const deleteClient = async (id) => {
-  const cookieStore = await cookies();
-  const supabase = createClient(cookieStore);
- 
-  const {error} = await supabase
-  .from('clients')
-  .delete()
-  .eq('id', id)
+  if (error) throw new Error(error.message);
 
-  if(error) throw new Error(error.message)
+  revalidatePath(path);
+};
 
-    revalidatePath("/clients")
-}
 
+
+//  COUNT DATA 
 
 

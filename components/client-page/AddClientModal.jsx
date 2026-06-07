@@ -1,6 +1,6 @@
 // components/client-page/AddClientModal.jsx
 "use client";
-import { addClient } from "@/action/ClientActions";
+import { add,} from "@/action/ClientActions";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
@@ -21,8 +21,19 @@ const AddClientModal = ({ onClose }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+
+const formData = {
+  name: e.target.name.value,       
+  company: e.target.company.value,  
+  industry: e.target.industry.value,
+  project: e.target.project.value,  
+  email: e.target.email.value,      
+  status: e.target.status.value,    
+  notes: e.target.notes.value,      
+}
     try {
-      await addClient(new FormData(e.target));
+      await add("clients" , formData, "/clients");
       onClose();
     } catch (err) {
       setError(err.message);

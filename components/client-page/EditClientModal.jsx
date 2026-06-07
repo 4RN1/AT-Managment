@@ -1,7 +1,7 @@
 "use client";
 
-import { editClient } from "@/action/ClientActions";
-import { useEffect, useState } from "react";
+import { edit, } from "@/action/ClientActions";
+import {  useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 const fields = [
@@ -16,9 +16,8 @@ const fields = [
 const EditClientModal = ({ client, onClose, onSave }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [status, setStatus] = useState(client?.status ?? "active");
 
-  // ✅ Single object for all field values instead of separate states
+  // Single object for all field values instead of separate states
   const [formData, setFormData] = useState({
   id:       client?.id       ?? null,
   name:     client?.name     ?? "",
@@ -27,22 +26,25 @@ const EditClientModal = ({ client, onClose, onSave }) => {
   project:  client?.project  ?? "",
   email:    client?.email    ?? "",
   notes:    client?.notes    ?? "",
+  status:   client?.status   ?? "active",
 });
   
 
-  // ✅ Generic change handler for all text fields
+  //  Generic change handler for all text fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Submit handler
+  //  Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+
     try {
-      await editClient({ ...formData, status });
+      await edit("clients" , formData , "/clients");
       onClose();
     } catch (err) {
       setError(err.message ?? "Something went wrong");
@@ -83,8 +85,8 @@ const EditClientModal = ({ client, onClose, onSave }) => {
             <label className="text-sm text-zinc-500">სტატუსი</label>
             <select
               name="status"
-              value={status} // ✅ controlled
-              onChange={(e) => setStatus(e.target.value)}
+              value={formData.status}
+              onChange={handleChange}
               required
               className="border border-zinc-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500"
             >

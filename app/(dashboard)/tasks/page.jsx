@@ -1,70 +1,25 @@
+import { get } from '@/action/ClientActions';
 import StatCard from '@/components/tasks-page/StatCard'
 import Table from '@/components/tasks-page/Table';
 import React from 'react'
-import { FaRegCheckSquare } from 'react-icons/fa'
-
-const STAT_CONFIG = {
-  შესასრულებელი: { iconColor: "#3b82f6", cardBg: "rgba(59, 130, 246, 0.08)" },  // blue
-  პროცესშია:     { iconColor: "#f59e0b", cardBg: "rgba(245, 158, 11, 0.08)" },  // amber
-  შესრულებული:   { iconColor: "#22c55e", cardBg: "rgba(34, 197, 94, 0.08)"  },  // green
-  გადაცდა:       { iconColor: "#ef4444", cardBg: "rgba(239, 68, 68, 0.08)"  },  // red
-  დრაფტი:        { iconColor: "#a855f7", cardBg: "rgba(168, 85, 247, 0.08)" },  // purple
-};
-
-const stats = [
-  { name: "შესასრულებელი", stat: 10 },
-  { name: "პროცესშია",     stat: 10 },
-  { name: "შესრულებული",   stat: 10 },
-  { name: "გადაცდა",       stat: 10 },
-  { name: "დრაფტი",        stat: 10 },
-];
-
-const task = [
-{ uniqueCode:"#-321451",
-    title:"ანიმაციების ჩაშენება",
-    descritpion:"მომხმარებელს ჭირდება ანიმაციების ჩაშენება about გვერდზე, კომპონენტები შემოვიდეს მარჯვნიდან მარცხნივ და სათაურები ქვემოდან ზემოთ",
-    assigned:"Anri begeladze",
-    priority:"მაღალი",
-    created:"6 ივნისი 2026",
-    expiring:"7 ივნისი 2026 / 2 დღე",
-    author:"Anri begeladze"
-   },
-   { uniqueCode:"#-321451",
-    title:"ანიმაციების ჩაშენება",
-    descritpion:"მომხმარებელს ჭირდება ანიმაციების ჩაშენება about გვერდზე, კომპონენტები შემოვიდეს მარჯვნიდან მარცხნივ და სათაურები ქვემოდან ზემოთ",
-    assigned:"Anri begeladze",
-    priority:"მაღალი",
-    created:"6 ივნისი 2026",
-    expiring:"7 ივნისი 2026 / 2 დღე",
-    author:"Anri begeladze"
-   }
- 
-]
-
-const page = () => {
+import { FaPlus, FaRegCheckSquare } from 'react-icons/fa'
 
 
+
+
+const page = async () => {
+
+  const data = await get("tasks")
   
   return (
     <>
-    <div className='grid grid-cols-5 gap-2 mt-5 mx-10'>
-    {stats.map(({ name, stat }) => (
-  <StatCard
-    key={name}
-    icon={FaRegCheckSquare}
-    name={name}
-    stat={stat}
-    iconColor={STAT_CONFIG[name].iconColor}
-    cardBg={STAT_CONFIG[name].cardBg}
-  />
-))}
-    </div>
-
-    <Table title={"შესასრულებელი"} taskData={task}  headingNumBgColor={" rgba(59, 130, 246, 0.08) "} headingNumColor={"#3b82f6"}/>
-    <Table title={"პროცესშია"} taskData={task} headingNumBgColor={" rgba(245, 158, 11, 0.08)"} headingNumColor={" #f59e0b"}/>
-    <Table title={"შესრულებული"} taskData={task} headingNumBgColor={" rgba(34, 197, 94, 0.08) "} headingNumColor={"#22c55e"}/>
-    <Table title={"გადაცდა"} taskData={task} headingNumBgColor={" rgba(239, 68, 68, 0.08)"} headingNumColor={" #ef4444"}/>
-    <Table title={"დრაფტი"} taskData={task} headingNumBgColor={"rgba(168, 85, 247, 0.08) "} headingNumColor={"#a855f7"}/>
+   
+    <StatCard შესასრულებელი={10} პროცესშია={5} შესრულებული={20} გადაცდა={2} />
+    <Table title={"შესასრულებელი"} taskData={data}  headingNumBgColor={" rgba(59, 130, 246, 0.08) "} headingNumColor={"#3b82f6"}/>
+    <Table title={"პროცესშია"} taskData={data} headingNumBgColor={" rgba(245, 158, 11, 0.08)"} headingNumColor={" #f59e0b"}/>
+    <Table title={"შესრულებული"} taskData={data} headingNumBgColor={" rgba(34, 197, 94, 0.08) "} headingNumColor={"#22c55e"}/>
+    <Table title={"გადაცდა"} taskData={data} headingNumBgColor={" rgba(239, 68, 68, 0.08)"} headingNumColor={" #ef4444"}/>
+    
     
 
 
