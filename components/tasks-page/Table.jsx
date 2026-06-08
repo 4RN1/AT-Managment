@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../buttons/Button";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { formatDate } from "@/utils/formatDate";
 
 const taskHeadings = [
   { title: "#კოდი" },
@@ -14,10 +15,26 @@ const taskHeadings = [
   { title: "" },
 ];
 
-const Table = ({ title, taskData, headingNumBgColor, headingNumColor }) => {
+const priorityConfig = {
+  low: { label: "დაბალი", color: "#22c55e", bg: "rgba(34, 197, 94, 0.1)" },
+  medium: { label: "საშუალო", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.1)" },
+  high: { label: "მაღალი", color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
+  urgent: {
+    label: "სასწრაფო",
+    color: "#7c3aed",
+    bg: "rgba(124, 58, 237, 0.1)",
+  },
+};
+
+const Table = ({
+  title,
+  taskData,
+  headingNumBgColor,
+  headingNumColor,
+  length,
+}) => {
   return (
     <div>
-      
       <div className="my-5  border border-zinc-400  mx-10 rounded-lg">
         <div className=" border-b border-zinc-400">
           <h2 className="font-medium py-2 px-2">
@@ -26,7 +43,7 @@ const Table = ({ title, taskData, headingNumBgColor, headingNumColor }) => {
               style={{ background: headingNumBgColor, color: headingNumColor }}
               className=" px-2.5 py-1 rounded-full"
             >
-              0
+              {length}
             </span>
           </h2>
         </div>
@@ -45,18 +62,26 @@ const Table = ({ title, taskData, headingNumBgColor, headingNumColor }) => {
               key={index}
               className="flex justify-between items-center font-medium text-sm text-black px-2 border-t border-zinc-400 py-3 hover:bg-zinc-400/10 gap-5"
             >
-              <p className="w-full max-w-50">{task.uniqueCode}</p>
+              <p className="w-full max-w-50">{`#-${task.id.slice(1, 8)}`}</p>
               <p className="w-full max-w-50">{task.title}</p>
               <button className="w-full max-w-50 py-1 bg-blue-500/10 text-blue-500 hover:text-blue-600 hover:bg-blue-600/10 rounded-lg cursor-pointer">
                 ნახვა
               </button>
-              <p className="w-full max-w-50">{task.assigned}</p>
-              <p className="w-full max-w-50  bg-red-400/30 text-red-600 py-1 rounded-lg text-center">
-                {task.priority}
+              <p className="w-full max-w-50">{task.assigned?.name}</p>
+              <p
+                className="w-full max-w-50 py-1 rounded-lg text-center text-sm font-semibold"
+                style={{
+                  color: priorityConfig[task.priority]?.color,
+                  background: priorityConfig[task.priority]?.bg,
+                }}
+              >
+                {priorityConfig[task.priority]?.label}
               </p>
-              <p className="w-full max-w-50">{task.created}</p>
-              <p className="w-full max-w-50">{task.expiring}</p>
-              <p className="w-full max-w-50">{task.author}</p>
+              <p className="w-full max-w-50">{formatDate(task.created_at)}</p>
+              <p className="w-full max-w-50">
+                {task.due_date ? formatDate(task.due_date) : "-"}
+              </p>
+              <p className="w-full max-w-50">{task.author?.name}</p>
               <div className="w-full max-w-50 flex justify-end">
                 <BsThreeDotsVertical
                   size={30}
