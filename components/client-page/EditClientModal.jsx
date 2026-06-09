@@ -13,7 +13,7 @@ const fields = [
   { name: "notes", label: "პროექტის აღწერა", type: "text" },
 ];
 
-const EditClientModal = ({ client, onClose, onSave }) => {
+const EditClientModal = ({ client, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 

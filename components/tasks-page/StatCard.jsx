@@ -12,7 +12,7 @@ const StatCard = ({ name, stat }) => {
   const { iconColor, cardBg } = STAT_CONFIG[name];
 
   return (
-    <di4v
+    <div
       className="p-4 rounded-xl flex items-center gap-4 transition-transform duration-150 hover:-translate-y-0.5"
       style={{ backgroundColor: cardBg, border: `1px solid ${iconColor}40` }}
     >
@@ -26,7 +26,7 @@ const StatCard = ({ name, stat }) => {
         <p className="text-md font-medium text-zinc-500">{name}</p>
         <p className="text-2xl font-medium leading-none" style={{ color: iconColor }}>{stat}</p>
       </div>
-    </di4v>
+    </div>
   );
 };
 

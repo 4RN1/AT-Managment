@@ -1,7 +1,13 @@
-import React from "react";
-import Button from "../buttons/Button";
+"use client"
+import React, { useState } from "react";
+
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { formatDate } from "@/utils/formatDate";
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
+import ViewTaskModal from "./ViewTaskModal";
+import { deleteInfo } from "@/action/ClientActions";
 
 const taskHeadings = [
   { title: "#კოდი" },
@@ -26,6 +32,8 @@ const priorityConfig = {
   },
 };
 
+
+
 const Table = ({
   title,
   taskData,
@@ -33,6 +41,16 @@ const Table = ({
   headingNumColor,
   length,
 }) => {
+
+
+
+    const [optionBox, setOptionBox] = useState(null)
+    const [descOpenModal, setDescOpenModal] = useState(false)
+    const [selectedTasks , setSelectedTasks] = useState(null)
+
+
+
+  
   return (
     <div>
       <div className="my-5  border border-zinc-400  mx-10 rounded-lg">
@@ -64,7 +82,9 @@ const Table = ({
             >
               <p className="w-full max-w-50">{`#-${task.id.slice(1, 8)}`}</p>
               <p className="w-full max-w-50">{task.title}</p>
-              <button className="w-full max-w-50 py-1 bg-blue-500/10 text-blue-500 hover:text-blue-600 hover:bg-blue-600/10 rounded-lg cursor-pointer">
+              <button 
+              onClick={() => {setDescOpenModal(true), setSelectedTasks(task)}}
+              className="w-full max-w-50 py-1 bg-blue-500/10 text-blue-500 hover:text-blue-600 hover:bg-blue-600/10 rounded-lg cursor-pointer">
                 ნახვა
               </button>
               <p className="w-full max-w-50">{task.assigned?.name}</p>
@@ -81,19 +101,37 @@ const Table = ({
               <p className="w-full max-w-50">
                 {task.due_date ? formatDate(task.due_date) : "-"}
               </p>
-              <p className="w-full max-w-50">{task.author?.name}</p>
-              <div className="w-full max-w-50 flex justify-end">
+              <p className="w-full max-w-50">{task.created_by?.name}</p>
+              <div className="w-full max-w-50 flex justify-end relative">
                 <BsThreeDotsVertical
+             onClick={(e) => {
+    e.stopPropagation();
+    setOptionBox(optionBox === task.id ? null : task.id);
+  }}
+
+  
+                  
                   size={30}
                   className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
+                  
                 />
+                  {optionBox === task.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col">
+                                <button onClick={() => { setSelectedClient(task); setOpenEdit(true); }} className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer" ><FiEdit /> რედაქტირება</button>
+                                <button onClick={() => {deleteInfo( "tasks", task.id, "/tasks")}}  className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"><MdDelete /> წაშლა</button>
+                              </div> )}  
+              
               </div>
+               
             </div>
+            
           ))
         ) : (
           <p className="text-center text-zinc-400 py-5">მონაცემები არ არის</p>
         )}
       </div>
+
+        {descOpenModal && setSelectedTasks && <ViewTaskModal task={selectedTasks} onClose={() => {setDescOpenModal(false), setSelectedTasks(null)}}/>}
+
     </div>
   );
 };
