@@ -54,19 +54,19 @@ const ViewTaskModal = ({ task, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-      <div className="bg-white w-full max-w-150 rounded-lg p-5">
+      <div className="bg-white w-full max-w-150 rounded-lg p-4">
         <div className="flex justify-end">
-          <button onClick={onClose} className="text-zinc-400 hover:text-black">
+          <button onClick={onClose} className="text-zinc-400 hover:text-black cursor-pointer">
             <IoClose size={22} />
           </button>
         </div>
 
-        <div className="space-y-3">
-          <div>
-            <h2 className="text-2xl font-semibold">{formData.title}</h2>
+        <div className="space-y-5">
+          <div className="">
+            <h2 className="text-2xl font-semibold ">{formData.title}</h2>
           </div>
 
-          <div className="flex justify-between max-w-70">
+          <div className="flex justify-between max-w-70 items-center">
             <p className="text-sm text-zinc-500">სტატუსი</p>
             <p
               style={{
@@ -79,7 +79,7 @@ const ViewTaskModal = ({ task, onClose }) => {
             </p>
           </div>
 
-          <div className="flex justify-between max-w-70">
+          <div className="flex justify-between max-w-70 items-center">
             <p className="text-sm text-zinc-500">პრიორიტეტი</p>
             <p
               style={{
@@ -92,7 +92,7 @@ const ViewTaskModal = ({ task, onClose }) => {
             </p>
           </div>
 
-          <div className="flex justify-between max-w-70">
+          <div className="flex justify-between max-w-70 items-center">
             <p className="text-sm text-zinc-500">მინიჭებულია</p>
             <p>{formData.assigned_to}</p>
           </div>

@@ -1,11 +1,10 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect,  useState } from "react";
 
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { formatDate } from "@/utils/formatDate";
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-import { IoClose } from "react-icons/io5";
 import ViewTaskModal from "./ViewTaskModal";
 import { deleteInfo } from "@/action/ClientActions";
 
@@ -20,6 +19,7 @@ const taskHeadings = [
   { title: "ავტორი" },
   { title: "" },
 ];
+
 
 const priorityConfig = {
   low: { label: "დაბალი", color: "#22c55e", bg: "rgba(34, 197, 94, 0.1)" },
@@ -49,7 +49,15 @@ const Table = ({
     const [selectedTasks , setSelectedTasks] = useState(null)
 
 
+useEffect(() => {
+  function handleClickOutside(e) {
+    if (e.target.closest(".option-trigger")) return; // ignore the toggle button
+    setOptionBox(null);
+  }
 
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
   
   return (
     <div>
@@ -115,7 +123,7 @@ const Table = ({
                   className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
                   
                 />
-                  {optionBox === task.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col">
+                  {optionBox === task.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-20 text-[16px] flex flex-col option-trigger cursor-pointer">
                                 <button onClick={() => { setSelectedClient(task); setOpenEdit(true); }} className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer" ><FiEdit /> რედაქტირება</button>
                                 <button onClick={() => {deleteInfo( "tasks", task.id, "/tasks")}}  className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"><MdDelete /> წაშლა</button>
                               </div> )}  
