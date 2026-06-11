@@ -20,6 +20,7 @@ import Button from "../buttons/Button";
 import AddClientModal from "./AddClientModal";
 import EditClientModal from "./EditClientModal";
 import {deleteInfo } from "@/action/ClientActions";
+import { formatDate } from "@/utils/formatDate";
 
 const Table = ({clientInfo}) => {
 
@@ -135,7 +136,7 @@ const Table = ({clientInfo}) => {
                 {info.notes}
               </td>
               <td className="border-t border-b border-zinc-400 p-2">
-                {info.created_at}
+                {formatDate(info.created_at)}
               </td>
               <td className="border-t border-b border-zinc-400 p-2 text-center relative">
                 {" "}
@@ -145,7 +146,7 @@ const Table = ({clientInfo}) => {
                   className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
                 />
 
-              {optionBox === info.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col">
+              {optionBox === info.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col rounded-lg p-2">
                   <button onClick={() => { setSelectedClient(info); setOpenEdit(true); }} className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer" ><FiEdit /> რედაქტირება</button>
                   <button onClick={() => {deleteInfo( "clients", info.id, "/clients")}}  className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"><MdDelete /> წაშლა</button>
                 </div> )}  

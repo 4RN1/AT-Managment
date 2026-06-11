@@ -11,6 +11,9 @@ import React from 'react'
 const page = async () => {
 
   // status = todo , in_progress, done, cancelled (overdue)
+    const getAll  = await get("tasks", "id")
+
+
   const profiles = await get("profiles", "id, name")
   const columns = `*, assigned:assigned_to(name), author:created_by(name)`
 
@@ -23,15 +26,16 @@ const page = async () => {
     <>
       <AddTasksModal assignees={profiles} />
       <StatCard
+        სულ={getAll.length}
         შესასრულებელი={getToBeDoneTasks.length}
         პროცესშია={getInProgressTasks.length}
         შესრულებული={getDoneTasks.length}
-        გადაცდა={getOverdueTasks.length}
+        გადაცდა={getOverdueTasks.length} 
       />
-      <Table title="შესასრულებელი" length={getToBeDoneTasks.length} taskData={getToBeDoneTasks}   headingNumBgColor="rgba(59, 130, 246, 0.08)"  headingNumColor="#3b82f6" />
-      <Table title="პროცესშია"    length={getInProgressTasks.length}  taskData={getInProgressTasks} headingNumBgColor="rgba(245, 158, 11, 0.08)" headingNumColor="#f59e0b" />
-      <Table title="შესრულებული"   length={getDoneTasks.length} taskData={getDoneTasks}       headingNumBgColor="rgba(34, 197, 94, 0.08)"  headingNumColor="#22c55e" />
-      <Table title="გადაცდა"     length={getOverdueTasks.length}   taskData={getOverdueTasks}    headingNumBgColor="rgba(239, 68, 68, 0.08)"  headingNumColor="#ef4444" />
+      <Table title="შესასრულებელი" length={getToBeDoneTasks.length} taskData={getToBeDoneTasks}   headingNumBgColor="rgba(59, 130, 246, 0.08)"  headingNumColor="#3b82f6"  assignees={profiles}/>
+      <Table title="პროცესშია"    length={getInProgressTasks.length}  taskData={getInProgressTasks} headingNumBgColor="rgba(245, 158, 11, 0.08)" headingNumColor="#f59e0b"  assignees={profiles}/>
+      <Table title="შესრულებული"   length={getDoneTasks.length} taskData={getDoneTasks}       headingNumBgColor="rgba(34, 197, 94, 0.08)"  headingNumColor="#22c55e"  assignees={profiles}/>
+      <Table title="გადაცდა"     length={getOverdueTasks.length}   taskData={getOverdueTasks}    headingNumBgColor="rgba(239, 68, 68, 0.08)"  headingNumColor="#ef4444"  assignees={profiles}/>
     </>
   )
 }

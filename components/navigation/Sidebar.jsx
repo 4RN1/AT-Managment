@@ -1,3 +1,5 @@
+"use client"
+import { logout } from '@/action/logout'
 import Link from 'next/link'
 import React from 'react'
 import { FaTasks } from 'react-icons/fa'
@@ -38,7 +40,7 @@ return (
     </nav>
     </div>
 
-    <button className='flex flex-col items-center text-xs p-2 hover:bg-[#6150E1] rounded-md cursor-pointer' ><RiLogoutBoxRFill  size={25} className='mb-1.5'/>გამოსვლა</button>
+    <button onClick={() => logout()} className='flex flex-col items-center text-xs p-2 hover:bg-[#6150E1] rounded-md cursor-pointer' ><RiLogoutBoxRFill  size={25} className='mb-1.5'/>გამოსვლა</button>
 
     </header>
   )

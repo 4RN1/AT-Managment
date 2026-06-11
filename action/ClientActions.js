@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 // getting cookies ---------------------
-const getSupabase = async () => {
+export const  getSupabase = async () => {
   const cookieStore = await cookies();
   return createClient(cookieStore);
 };
@@ -66,7 +66,7 @@ export const getCount = async (table, column, value) => {
   return count;
 };
 
-
+// GET DATA WITH WHERE
 export const getWhere = async (table, column, value, columns = "*") => {
   const supabase = await getSupabase();
   const { data, error } = await supabase
@@ -77,3 +77,4 @@ export const getWhere = async (table, column, value, columns = "*") => {
   if (error) throw new Error(error.message);
   return data;
 };
+

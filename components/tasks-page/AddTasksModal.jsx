@@ -27,6 +27,7 @@ const AddTasksModal = ({ assignees = [] }) => {
         assigned_to: e.target.assigned_to.value,
         priority: e.target.priority.value,
         status: "todo",
+        due_date:e.target.due_date.value
       };
       await add("tasks", formData, "/tasks");
       setOpen(false);
@@ -119,6 +120,17 @@ const AddTasksModal = ({ assignees = [] }) => {
                   ))}
                 </select>
               </div>
+
+                   <div className="flex flex-col gap-1">
+                <label className="text-sm text-zinc-500">ვადა</label>
+                <input
+                  name="due_date"
+                  type="date"
+                  required
+                  className="border border-zinc-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
 
               {error && <p className="text-red-500 text-sm">{error}</p>}
 

@@ -1,5 +1,10 @@
+import { formatDate } from "@/utils/formatDate";
 import React, { useState } from "react";
+import { FcHighPriority } from "react-icons/fc";
+import { GrStatusGood } from "react-icons/gr";
 import { IoClose } from "react-icons/io5";
+import { LuCalendarClock } from "react-icons/lu";
+import { MdAssignmentAdd, MdAssignmentInd, MdDescription } from "react-icons/md";
 
 const ViewTaskModal = ({ task, onClose }) => {
   const fields = [
@@ -17,6 +22,9 @@ const ViewTaskModal = ({ task, onClose }) => {
     assigned_to: task?.assigned.name ?? "",
     priority: task?.priority ?? "",
     description: task?.description ?? "",
+    created_at: task?.created_at ?? "",
+    due_date: task?.due_date ?? "",
+
   });
 
   const priorityConfig = {
@@ -53,53 +61,64 @@ const ViewTaskModal = ({ task, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-      <div className="bg-white w-full max-w-150 rounded-lg p-4">
-        <div className="flex justify-end">
+    <div onClick={() => onClose()} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+      <div className="bg-white w-full max-w-150 rounded-lg ">
+        <div className="flex justify-end px-4 pt-4">
           <button onClick={onClose} className="text-zinc-400 hover:text-black cursor-pointer">
-            <IoClose size={22} />
+            <IoClose size={25} />
           </button>
         </div>
 
-        <div className="space-y-5">
-          <div className="">
+        <div className="space-y-5 px-8 pb-4">
+          <div className="border-b border-zinc-300 pb-4">
             <h2 className="text-2xl font-semibold ">{formData.title}</h2>
           </div>
 
           <div className="flex justify-between max-w-70 items-center">
-            <p className="text-sm text-zinc-500">სტატუსი</p>
+            <p className="text-sm text-zinc-500 flex items-center gap-2"><GrStatusGood color="green" size={20}/>სტატუსი</p>
             <p
               style={{
                 color: statusConfig[formData.status]?.color,
                 background: statusConfig[formData.status]?.bg,
               }}
-              className="p-1 rounded-lg"
+              className="p-1 rounded-lg font-medium"
             >
-              {formData.status}
+             {statusConfig[formData.status]?.label}
             </p>
           </div>
 
           <div className="flex justify-between max-w-70 items-center">
-            <p className="text-sm text-zinc-500">პრიორიტეტი</p>
+            <p className="text-sm text-zinc-500 flex items-center gap-2"><FcHighPriority size={20} /> პრიორიტეტი</p>
             <p
               style={{
                 color: priorityConfig[formData.priority]?.color,
                 background: priorityConfig[formData.priority]?.bg,
+               
               }}
-              className="p-1 rounded-lg"
+              className="px-2 py-1 rounded-lg font-medium"
             >
-              {formData.priority}
+              {priorityConfig[formData.priority]?.label}
             </p>
           </div>
 
           <div className="flex justify-between max-w-70 items-center">
-            <p className="text-sm text-zinc-500">მინიჭებულია</p>
-            <p>{formData.assigned_to}</p>
+            <p className="text-sm text-zinc-500 flex items-center gap-2"><MdAssignmentInd  size={20} color="blue"/> მინიჭებულია</p>
+            <p className="font-medium">{formData.assigned_to}</p>
           </div>
 
-          <div className="flex flex-col gap-4 ">
-            <p className="text-sm text-zinc-500 border-b border-zinc-400 pb-3">აღწერა</p>
-            <p>{formData.description}</p>
+          <div className="flex justify-between max-w-70 items-center">
+            <p className="text-sm text-zinc-500 flex items-center gap-2"><MdAssignmentAdd  size={20} color="green"/> შეიქმნა</p>
+            <p className="font-medium">{formatDate(formData.created_at)}</p>
+          </div>
+
+          <div className="flex justify-between max-w-70 items-center mb-7">
+            <p className="text-sm text-zinc-500 flex items-center gap-2"><LuCalendarClock  size={20} color="red"/>ვადა</p>
+            <p className="font-medium">{formatDate(formData.due_date)}</p>
+          </div>
+
+          <div className="flex flex-col gap-2 ">
+            <p className="text-sm text-zinc-500  flex items-center gap-2 border-b border-zinc-300 pb-2"><MdDescription  size={20} color="black"/>აღწერა</p>
+            <p className="text-justify text-zinc-800">{formData.description}</p>
           </div>
         </div>
       </div>
