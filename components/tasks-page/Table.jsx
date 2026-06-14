@@ -29,10 +29,7 @@ const priorityConfig = {
   low: { label: "დაბალი", color: "#22c55e", bg: "rgba(34, 197, 94, 0.1)" },
   medium: { label: "საშუალო", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.1)" },
   high: { label: "მაღალი", color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
-  urgent: {
-    label: "სასწრაფო",
-    color: "#7c3aed",
-    bg: "rgba(124, 58, 237, 0.1)",
+  urgent: {label: "სასწრაფო", color: "#7c3aed",bg: "rgba(124, 58, 237, 0.1)",
   },
 };
 

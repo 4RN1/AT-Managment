@@ -15,6 +15,7 @@ const Page = () => {
     setLoading(true)
     setError('')
 
+
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
@@ -26,6 +27,12 @@ const Page = () => {
     router.push('/')
   }
 
+  const handleKeyDown = (e) => {
+  if (e.key === 'Enter') {
+    handleLogin();
+  }
+};
+
   return (
     <div className='h-screen flex items-center'>
       <div className='flex flex-col w-full max-w-100 mx-auto gap-2 border border-zinc-400 rounded-md py-4 px-2'>
@@ -36,6 +43,7 @@ const Page = () => {
           type="email"
           id="email"
           placeholder='example@gmail.com'
+          onKeyDown={handleKeyDown}
           className='py-1 px-2 border border-zinc-400 rounded-md'
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -45,6 +53,7 @@ const Page = () => {
         <input
           type="password"
           id="password"
+          onKeyDown={handleKeyDown}
           placeholder='*********'
           className='py-1 px-2 border border-zinc-400 rounded-md'
           value={password}
