@@ -16,15 +16,17 @@ import { formatDate } from "@/utils/formatDate";
 import { GiSandsOfTime } from "react-icons/gi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { GoDotFill } from "react-icons/go";
+import { FaPlus } from "react-icons/fa";
 
 const tableInfo = [
   { name: "თარიღი", downArrow: IoMdArrowDropdown },
   { name: "სერვისი", downArrow: IoMdArrowDropdown },
   { name: "კომპანია", downArrow: IoMdArrowDropdown },
   { name: "ტიპი", downArrow: IoMdArrowDropdown },
-  { name: "სტატუსი", downArrow: IoMdArrowDropdown },
   { name: "გადახდის ტიპი", downArrow: IoMdArrowDropdown },
   { name: "თანხა", downArrow: IoMdArrowDropdown },
+  { name: "სტატუსი", downArrow: IoMdArrowDropdown },
   { name: "", downArrow: null },
 ];
 
@@ -38,9 +40,9 @@ const typeConfig = {
 };
 
 const statusConfig = {
-  pending: { label: "მუშავდება", bgColor: "rgba(245, 158, 11, 0.1)", textColor: "#f59e0b" , icon:GiSandsOfTime},
-  paid: { label: "გადახდილია", bgColor: "rgba(34, 197, 94, 0.1)", textColor: "#22c55e" , icon:FaRegCircleCheck},
-  cancelled: { label: "გაუქმდა", bgColor: "rgba(239, 68, 68, 0.1)", textColor: "#ef4444",icon:IoCloseCircleOutline},
+  pending: { label: "მუშავდება",  textColor: "#f59e0b" , icon:GiSandsOfTime},
+  paid: { label: "გადახდილია", textColor: "#22c55e" , icon:FaRegCircleCheck},
+  cancelled: { label: "გაუქმდა", textColor: "#ef4444",icon:IoCloseCircleOutline},
 };
 const paymentMethodConfig = {
   cash: { label: "ნაღდი"},
@@ -48,11 +50,12 @@ const paymentMethodConfig = {
   bank_transfer:{ label: "საბანკო გადარიცხვა"},
 };
 
-const Table = ({ Info }) => {
+const Table = ({ info }) => {
   const [optionBox, setOptionBox] = useState(false);
 
   return (
     <>
+
       {/* -------- Modal ---------- */}
       {/* {open && <AddClientModal onClose={() => setOpen(false)} />}
 {openEdit && (
@@ -63,7 +66,10 @@ const Table = ({ Info }) => {
 )} */}
       {/* Search & Add Client Button */}
 
-      <div className="py-5 px-4 flex ">
+      <div className="py-5  flex flex-col gap-5 max-w-380 w-full mx-auto">
+    <h1 className="text-2xl text-black font-bold">ფინანსები</h1>
+ 
+ <div className="flex justify-between">
         <div className="flex items-center w-full max-w-115 justify-between">
           <div className="relative flex items-center">
             <CiSearch className="absolute left-2 text-zinc-400" size={20} />
@@ -77,13 +83,14 @@ const Table = ({ Info }) => {
           <Button content={"განახლება"} action={null} icon={<TfiReload />} />
         </div>
 
-        {/* <button  className="flex items-center gap-3 bg-emerald-500 text-white font-medium px-3.5 py-2.5 rounded-lg cursor-pointer hover:opacity-85"><FaPlus />
-          </button> */}
+        <button  className="flex items-center gap-3 bg-emerald-500 text-white font-medium px-3.5 py-2.5 rounded-lg cursor-pointer hover:opacity-85"><FaPlus /> ტრანზაქციის დამატება
+          </button>
+          </div>
       </div>
 
       {/*--------------- Table ------------- */}
 
-      <table className="w-full">
+      <table className="w-full max-w-380 mx-auto border border-zinc-600">
         <thead>
           <tr>
             {tableInfo.map((header) => {
@@ -92,7 +99,7 @@ const Table = ({ Info }) => {
               return (
                 <th
                   key={header.name}
-                  className="border-b border-zinc-400 text-left px-2 py-2 lg:text-[13px]"
+                  className="border-b border-zinc-400 text-left px-2 py-2 lg:text-[13px] "
                 >
                   <span className="flex items-center">
                     <div className="flex items-center">{header.name}</div>
@@ -106,21 +113,22 @@ const Table = ({ Info }) => {
           </tr>
         </thead>
         <tbody>
-          {Info.map((info) => (
+
+          {info.map((info) => (
             <tr
               key={info.id}
-              className="text-[13px] lg:text-[15px] text-zinc-700 font-medium"
+              className="text-[13px] lg:text-[15px] text-zinc-800 font-medium border border-zinc-600"
             >
-              <td className="border-t border-b border-zinc-400 p-2">
+              <td className="p-2">
                 {formatDate(info.created_at)}
               </td>
-              <td className="border-t border-b border-zinc-400 p-2">
+              <td className="p-2">
                 {info.title}
               </td>
-              <td className="border-t border-b border-zinc-400 p-2">
+              <td className="p-2">
                 {info.company}
               </td>
-              <td className="border-t border-b border-zinc-400 p-2 ">
+              <td className="p-2 ">
                 <span
                   className="p-2 rounded-lg"
                   style={{
@@ -132,31 +140,32 @@ const Table = ({ Info }) => {
                   {typeConfig[info.type]?.label}
                 </span>
               </td>
-              <td className="border-t border-b border-zinc-400 p-2">
+            
+              <td className="p-2 font-bold">
                 <span className="p-2 rounded-lg"
                 style={{
-                    color: statusConfig[info.type]?.textColor,
-                    background: statusConfig[info.type]?.bgColor,
-                  }}
-                >
-                  {statusConfig[info.status]?.label}
-                </span>
-              </td>
-              <td className="border-t border-b border-zinc-400 p-2 font-bold">
-                <span className="p-2 rounded-lg"
-                style={{
-                    color: paymentMethodConfig[info.type]?.textColor,
-                    background: paymentMethodConfig[info.type]?.bgColor,
+                    color: paymentMethodConfig[info.payment]?.textColor,
+                    background: paymentMethodConfig[info.payment]?.bgColor,
                   }}
                 >
                 {paymentMethodConfig[info.payment]?.label}
                 </span>
               </td>
 
-              <td className="border-t border-b border-zinc-400 p-2 font-bold text-black">
+              <td className="p-2 font-bold text-black">
                 {info.amount.toFixed(2)} ₾
               </td>
-              <td className="border-t border-b border-zinc-400 p-2 text-center relative">
+
+                <td className="p-2">
+                <span className="p-2 rounded-lg flex items-center gap-1"
+                style={{
+                    color: statusConfig[info.status]?.textColor,
+                  }}
+                >
+                  <GoDotFill />   {statusConfig[info.status]?.label}
+                </span>
+              </td>
+              <td className="p-2 text-center relative">
                 {" "}
                 <BsThreeDotsVertical
                   onClick={() =>
@@ -188,14 +197,16 @@ const Table = ({ Info }) => {
                 )}
               </td>
             </tr>
+            
           ))}
+      
         </tbody>
+        
       </table>
-      {Info.length === 0 ? (
-        <p className="text-center text-zinc-400 mt-5">
-          კლიენტები არ არის დამატებული
-        </p>
-      ) : null}
+      {info.length === 0 && (
+        <p className="text-center text-zinc-400 mt-5">ჩანაწერები არ არის დამატებული</p>
+      )}
+    
     </>
   );
 };
