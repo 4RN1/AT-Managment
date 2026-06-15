@@ -96,7 +96,7 @@ const EditClientModal = ({ client, onClose }) => {
             </select>
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-red-600 text-sm">{error}</p>}
 
           {/* ✅ Submit button */}
           <button
