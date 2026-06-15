@@ -126,7 +126,7 @@ const Table = ({ info }) => {
                 {info.title}
               </td>
               <td className="p-2">
-                {info.company}
+                {info.client?.company}
               </td>
               <td className="p-2 ">
                 <span
@@ -148,7 +148,7 @@ const Table = ({ info }) => {
                     background: paymentMethodConfig[info.payment]?.bgColor,
                   }}
                 >
-                {paymentMethodConfig[info.payment]?.label}
+                {paymentMethodConfig[info.payment_method]?.label}
                 </span>
               </td>
 
