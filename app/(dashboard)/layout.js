@@ -2,17 +2,22 @@ import { getSupabase } from "@/action/ClientActions";
 import Navbar from "@/components/navigation/Navbar";
 import Sidebar from "@/components/navigation/Sidebar";
 
+
+
+
 const DashboardLayout = async  ({ children }) => {
 
   const supabase = await getSupabase()
-  
  const { data: { user } } = await supabase.auth.getUser()
+  
 
 const { data: profile } = await supabase
   .from('profiles')
   .select('name')
   .eq('id', user.id)
   .single()
+
+if (!user) redirect('/login')
 
   return (
     <div className="h-full flex flex-row">

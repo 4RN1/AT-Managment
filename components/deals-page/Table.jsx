@@ -18,12 +18,13 @@ import { FaRegCircleCheck } from "react-icons/fa6";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { GoDotFill } from "react-icons/go";
 import { FaPlus } from "react-icons/fa";
+import AddDealsModal from "./AddDealsmodal";
 
 const tableInfo = [
   { name: "თარიღი", downArrow: IoMdArrowDropdown },
   { name: "სერვისი", downArrow: IoMdArrowDropdown },
   { name: "კომპანია", downArrow: IoMdArrowDropdown },
-  { name: "ტიპი", downArrow: IoMdArrowDropdown },
+  { name: "ოპერაციის ტიპი", downArrow: IoMdArrowDropdown },
   { name: "გადახდის ტიპი", downArrow: IoMdArrowDropdown },
   { name: "თანხა", downArrow: IoMdArrowDropdown },
   { name: "სტატუსი", downArrow: IoMdArrowDropdown },
@@ -50,15 +51,14 @@ const paymentMethodConfig = {
   bank_transfer:{ label: "საბანკო გადარიცხვა"},
 };
 
-const Table = ({ info }) => {
+const Table = ({ info , clients }) => {
   const [optionBox, setOptionBox] = useState(false);
-
+  const [open , setOpen] = useState(false)
   return (
     <>
 
-      {/* -------- Modal ---------- */}
-      {/* {open && <AddClientModal onClose={() => setOpen(false)} />}
-{openEdit && (
+   
+{/* {openEdit && (
   <EditClientModal
     client={selectedClient}  
     onClose={() => { setOpenEdit(false); setSelectedClient(null); }}
@@ -83,7 +83,7 @@ const Table = ({ info }) => {
           <Button content={"განახლება"} action={null} icon={<TfiReload />} />
         </div>
 
-        <button  className="flex items-center gap-3 bg-emerald-500 text-white font-medium px-3.5 py-2.5 rounded-lg cursor-pointer hover:opacity-85"><FaPlus /> ტრანზაქციის დამატება
+        <button onClick={() => setOpen(true)}  className="flex items-center gap-3 bg-emerald-500 text-white font-medium px-3.5 py-2.5 rounded-lg cursor-pointer hover:opacity-85"><FaPlus /> ტრანზაქციის დამატება
           </button>
           </div>
       </div>
@@ -126,7 +126,7 @@ const Table = ({ info }) => {
                 {info.title}
               </td>
               <td className="p-2">
-                {info.client?.company}
+                {info.clients?.company}
               </td>
               <td className="p-2 ">
                 <span
@@ -187,7 +187,7 @@ const Table = ({ info }) => {
                     </button>
                     <button
                       onClick={() => {
-                        deleteInfo("clients", info.id, "/clients");
+                        deleteInfo("deals", info.id, "/deals");
                       }}
                       className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"
                     >
@@ -198,6 +198,8 @@ const Table = ({ info }) => {
               </td>
             </tr>
             
+
+            
           ))}
       
         </tbody>
@@ -206,6 +208,7 @@ const Table = ({ info }) => {
       {info.length === 0 && (
         <p className="text-center text-zinc-400 mt-5">ჩანაწერები არ არის დამატებული</p>
       )}
+      {open && <AddDealsModal clients={clients} onClose={() => setOpen(false)} />}
     
     </>
   );

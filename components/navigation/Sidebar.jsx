@@ -34,7 +34,7 @@ const Sidebar = () => {
 
       const Icon = nav.icon
 return (
-        <Link key={nav.link} href={nav.link} className='flex flex-col items-center text-[10px] px-1  py-1.5 rounded-md hover:bg-[#6150E1]'><Icon size={22} className='mb-1.5' />{nav.name}</Link>
+        <Link onClick={null} key={nav.link} href={nav.link} className='flex flex-col items-center text-[10px] px-1  py-1.5 rounded-md hover:bg-[#6150E1]'><Icon size={22} className='mb-1.5' />{nav.name}</Link>
       )})}
 
     </nav>
