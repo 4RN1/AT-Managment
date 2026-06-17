@@ -1,8 +1,9 @@
 "use client";
+import { edit } from "@/action/ClientActions";
 import React, { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import { add } from "@/action/ClientActions";
+
+
 
 const typeValues = [
   { value: "income", label: "შემოსავალი" },
@@ -16,12 +17,12 @@ const paymentMethods = [
 ];
 
 const statusValues = [
-  { value: "pending", label: "მუშავდება", default: true },
-  { value: "paid", label: "გადახდილი", default: false },
-  { value: "cancelled", label: "გაუქმებული", default: false },
+  { value: "pending", label: "მუშავდება" },
+  { value: "paid", label: "გადახდილი" },
+  { value: "cancelled", label: "გაუქმებული" },
 ];
 
-const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
+const EditDealsModal = ({ clients = [], deal, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -32,16 +33,15 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
 
     try {
       const formData = {
-        client_id: e.target.client_id.value, // ← was "company"
-        title: e.target.service.value, // ← was "service", column is "title"
+        client_id: e.target.client_id.value,
+        title: e.target.service.value,
         type: e.target.type.value,
         payment_method: e.target.payment_method.value,
         status: e.target.status.value,
         amount: e.target.amount.value,
       };
-      await add("deals", formData, "/deals");
+      await edit("deals", deal.id, formData, "/deals");
       onClose();
-      onSuccess();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -50,12 +50,12 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
   };
 
   return (
-    <div className="mx-10 mt-5">
-      <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div className="mx-10 mt-5 absolute">
+      <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center" >
         <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative">
           {/* Header */}
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-lg font-semibold">ტრანზაქციის დამატება</h2>
+            <h2 className="text-lg font-semibold">ტრანზაქციის რედაქტირება</h2>
             <button
               onClick={() => onClose()}
               className="text-zinc-400 hover:text-black cursor-pointer"
@@ -67,37 +67,40 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
               <label className="text-sm text-zinc-500">კლიენტი</label>
-
               <select
                 name="client_id"
+                defaultValue={deal?.name}
                 className="border border-zinc-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-emerald-500"
               >
-                {clients.map((clients) => (
-                  <option key={clients.id} value={clients.id}>
-                    {clients.company}
+                {clients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.company}
                   </option>
                 ))}
               </select>
             </div>
-            {/* Title */}
+
             <div className="flex flex-col gap-1">
               <label className="text-sm text-zinc-500">სერვისი</label>
               <input
                 name="service"
                 type="text"
                 required
+                defaultValue={deal?.title}
                 className="border border-zinc-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500"
               />
             </div>
+
             <div className="flex flex-col gap-1">
               <label className="text-sm text-zinc-500">ოპერაციის ტიპი</label>
               <select
                 name="type"
+                defaultValue={deal?.type}
                 className="border border-zinc-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-emerald-500"
               >
                 {typeValues.map((type, index) => (
                   <option key={index} value={type.value}>
-                    {type?.label}
+                    {type.label}
                   </option>
                 ))}
               </select>
@@ -107,11 +110,12 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
               <label className="text-sm text-zinc-500">გადახდის ტიპი</label>
               <select
                 name="payment_method"
+                defaultValue={deal?.payment_method}
                 className="border border-zinc-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500"
               >
                 {paymentMethods.map((type, index) => (
                   <option key={index} value={type.value}>
-                    {type?.label}
+                    {type.label}
                   </option>
                 ))}
               </select>
@@ -121,15 +125,12 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
               <label className="text-sm text-zinc-500">სტატუსი</label>
               <select
                 name="status"
+                defaultValue={deal?.status}
                 className="border border-zinc-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500"
               >
                 {statusValues.map((type, index) => (
-                  <option
-                    key={index}
-                    value={type.value}
-                    defaultValue={type?.default}
-                  >
-                    {type?.label}
+                  <option key={index} value={type.value}>
+                    {type.label}
                   </option>
                 ))}
               </select>
@@ -143,6 +144,7 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
                 step="0.01"
                 min="0"
                 required
+                defaultValue={deal?.amount}
                 className="border border-zinc-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500"
               />
             </div>
@@ -154,7 +156,7 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
               disabled={loading}
               className="mt-2 bg-emerald-500 text-white font-medium py-2 rounded-lg hover:opacity-85 disabled:opacity-50"
             >
-              {loading ? "იტვირთება..." : "დამატება"}
+              {loading ? "იტვირთება..." : "შენახვა"}
             </button>
           </form>
         </div>
@@ -163,4 +165,4 @@ const AddDealsModal = ({ clients = [], onClose, onSuccess }) => {
   );
 };
 
-export default AddDealsModal;
+export default EditDealsModal;

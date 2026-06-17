@@ -3,6 +3,7 @@
 import { add,} from "@/action/ClientActions";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
+import AlertComp from "../AlertComp";
 
 const fields = [
   { name: "name", label: "სახელი", type: "text" },
@@ -13,15 +14,16 @@ const fields = [
   { name: "notes", label: "პროექტის აღწერა", type: "text" },
 ];
 
-const AddClientModal = ({ onClose }) => {
+const AddClientModal = ({ onClose , onSuccess}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+    
 
 const formData = {
   name: e.target.name.value,       
@@ -32,13 +34,15 @@ const formData = {
   status: e.target.status.value,    
   notes: e.target.notes.value,      
 }
-    try {
-      await add("clients" , formData, "/clients");
+   try {
+      await add("clients", formData, "/clients");
       onClose();
+      onSuccess();
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
+
     }
   };
 
@@ -48,7 +52,7 @@ const formData = {
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-semibold">კლიენტის დამატება</h2>
-          <button onClick={onClose} className="text-zinc-400 hover:text-black">
+          <button onClick={onClose} className="text-zinc-400 hover:text-black cursor-pointer">
             <IoClose size={22} />
           </button>
         </div>

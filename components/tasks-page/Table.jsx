@@ -12,6 +12,8 @@ import { deleteInfo } from "@/action/ClientActions";
 import ViewTaskModal from "./ViewTaskModal";
 import ChangeStatusDropdown from "./ChangeStatusDropdown";
 import EditTaskModal from "./EditTasksModal";
+import { AnimatePresence } from "motion/react";
+import AlertComp from "../AlertComp";
 
 const taskHeadings = [
   { title: "#კოდი" },
@@ -46,6 +48,9 @@ const Table = ({
   const [selectedTasks, setSelectedTasks] = useState(null);
   const [statusDropdown, setStatusDropdown] = useState(false);
   const [openEdit, setOpenEdit] = useState(false)
+  const [success, setSuccess] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false)
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -176,6 +181,20 @@ const Table = ({
       )}
 
       {selectedTasks && openEdit && <EditTaskModal assignees={assignees} client={selectedTasks} onClose={() => setOpenEdit(false)}/> }
+
+        <div className="relative overflow-hidden">
+        <AnimatePresence>
+          {success && (
+            <AlertComp type="success" text="კლიენტი წარმატებით დაემატა!" />
+          )}
+          {editSuccess && (
+            <AlertComp type="update" text={"კლიენტი წარმატებით განახლდა"} />
+          )}
+          {deleteSuccess && (
+            <AlertComp type="delete" text={"კლიენტი წარმატებით წაიშალა"} />
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

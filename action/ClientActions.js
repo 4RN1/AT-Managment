@@ -78,3 +78,24 @@ export const getWhere = async (table, column, value, columns = "*") => {
   return data;
 };
 
+// * GET PAGINATED DATA ---------------------
+export const getPaginated = async (table, columns = "*", page = 1, limit = 10) => {
+  const supabase = await getSupabase();
+  
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  const { data, error, count } = await supabase
+    .from(table)
+    .select(columns, { count: "exact" })
+    .range(from, to);
+
+  if (error) throw new Error(error.message);
+  
+  return {
+    data,
+    count,
+    totalPages: Math.ceil(count / limit),
+    currentPage: page,
+  };
+};

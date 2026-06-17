@@ -13,7 +13,7 @@ const fields = [
   { name: "notes", label: "პროექტის აღწერა", type: "text" },
 ];
 
-const EditClientModal = ({ client, onClose }) => {
+const EditClientModal = ({ client, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -46,6 +46,7 @@ const EditClientModal = ({ client, onClose }) => {
     try {
       await edit("clients" , formData , "/clients");
       onClose();
+      onSuccess();
     } catch (err) {
       setError(err.message ?? "Something went wrong");
       console.log(error)
@@ -59,7 +60,7 @@ const EditClientModal = ({ client, onClose }) => {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-semibold">კლიენტის დამატება</h2>
-          <button onClick={onClose} className="text-zinc-400 hover:text-black">
+          <button onClick={onClose} className="text-zinc-400 hover:text-black cursor-pointer">
             <IoClose size={22} />
           </button>
         </div>

@@ -58,7 +58,7 @@ const AddTasksModal = ({ assignees = [] }) => {
               <h2 className="text-lg font-semibold">თასქის დამატება</h2>
               <button
                 onClick={() => setOpen(false)}
-                className="text-zinc-400 hover:text-black"
+                className="text-zinc-400 hover:text-black cursor-pointer"
               >
                 <IoClose size={22} />
               </button>

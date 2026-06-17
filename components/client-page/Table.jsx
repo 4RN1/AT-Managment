@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 // icons
@@ -19,15 +19,38 @@ import { MdDelete } from "react-icons/md";
 import Button from "../buttons/Button";
 import AddClientModal from "./AddClientModal";
 import EditClientModal from "./EditClientModal";
-import {deleteInfo } from "@/action/ClientActions";
+import { deleteInfo } from "@/action/ClientActions";
 import { formatDate } from "@/utils/formatDate";
+import AlertComp from "../AlertComp";
+import { AnimatePresence } from "motion/react";
 
-const Table = ({clientInfo}) => {
+const ClientStatusConfig = {
+  active: {
+    label: "აქტიური",
+    bgColor: "rgba(34, 197, 94, 0.2)",
+    textColor: "#22c55e",
+  },
+  inactive: {
+    label: "არააქტიური",
+    bgColor: "rgba(239, 68, 68, 0.2)",
+    textColor: "#ef4444",
+  },
+  archived: {
+    label: "არქივი",
+    bgColor: "rgba(59, 130, 246, 0.2)",
+    textColor: "#3b82f6",
+  },
+};
 
-  const [open, setOpen] = useState(false)
-  const [optionBox, setOptionBox] = useState(null)
-  const [openEdit, setOpenEdit] = useState(false)
-  const [selectedClient, setSelectedClient] = useState(null)
+const Table = ({ clientInfo }) => {
+  const [open, setOpen] = useState(false);
+  const [optionBox, setOptionBox] = useState(null);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false)
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+
 
   const tableInfo = [
     { name: "კლიენტის სახელი", icon: RxAvatar, downArrow: IoMdArrowDropdown },
@@ -47,39 +70,54 @@ const Table = ({clientInfo}) => {
 
   return (
     <>
-    {/* -------- Modal ---------- */}
-{open && <AddClientModal onClose={() => setOpen(false)} />}
-{openEdit && (
-  <EditClientModal
-    client={selectedClient}  // ✅ specific client, not the whole array
-    onClose={() => { setOpenEdit(false); setSelectedClient(null); }}
+      {/* -------- Modal ---------- */}
+      {open && (
+  <AddClientModal 
+    onClose={() => setOpen(false)} 
+    onSuccess={() => {
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    }}
   />
 )}
-{/* Search & Add Client Button */}
+      {openEdit && (
+        <EditClientModal
+          client={selectedClient} // ✅ specific client, not the whole array
+          onClose={() => {
+            setOpenEdit(false);
+            setSelectedClient(null);
+          }}
+          onSuccess={()=> {
+            setEditSuccess(true);
+            setTimeout(() => setEditSuccess(false), 3000);
+          }}
+        />
+      )}
+      {/* Search & Add Client Button */}
 
-<div className="py-5 px-4 flex justify-between">
-  <div className="flex items-center w-full justify-between max-w-115">
-  <div className="relative flex items-center">
-  <CiSearch className="absolute left-2 text-zinc-400" size={20} />
-  <input
-    placeholder="მოძებნა..."
-    className="pl-8 pr-2 py-1.5 min-w-70 border border-zinc-400 rounded-md"
-  />
-</div>
+      <div className="py-5 px-4 flex justify-between">
+        <div className="flex items-center w-full justify-between max-w-115">
+          <div className="relative flex items-center">
+            <CiSearch className="absolute left-2 text-zinc-400" size={20} />
+            <input
+              placeholder="მოძებნა..."
+              className="pl-8 pr-2 py-1.5 min-w-70 border border-zinc-400 rounded-md"
+            />
+          </div>
 
- <hr className="h-5 border-l border-zinc-400 w-0" />
+          <hr className="h-5 border-l border-zinc-400 w-0" />
 
+          <Button content={"განახლება"} action={null} icon={<TfiReload />} />
+        </div>
 
-   <Button content={"განახლება"} action={null} icon={<TfiReload/>}/>
-</div>
-
-<button onClick={() => setOpen(true)} className="flex items-center gap-3 bg-emerald-500 text-white font-medium px-3.5 py-2.5 rounded-lg cursor-pointer hover:opacity-85"><FaPlus />
-კლიენტის დამატება</button>
-
-</div>
-
-
-
+        <button
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-3 bg-emerald-500 text-white font-medium px-3.5 py-2.5 rounded-lg cursor-pointer hover:opacity-85"
+        >
+          <FaPlus />
+          კლიენტის დამატება
+        </button>
+      </div>
 
       {/*--------------- Table ------------- */}
 
@@ -89,7 +127,6 @@ const Table = ({clientInfo}) => {
             {tableInfo.map((header) => {
               const Icon = header.icon;
               const ArrowIcon = header.downArrow;
-
               return (
                 <th
                   key={header.name}
@@ -109,9 +146,12 @@ const Table = ({clientInfo}) => {
             })}
           </tr>
         </thead>
-        <tbody >
+        <tbody>
           {clientInfo.map((info) => (
-            <tr key={info.id} className="text-[13px] lg:text-[15px] text-zinc-700 font-medium">
+            <tr
+              key={info.id}
+              className="text-[13px] lg:text-[15px] text-zinc-700 font-medium"
+            >
               <td className="border-t border-b border-zinc-400 p-2">
                 {info.name}
               </td>
@@ -121,16 +161,22 @@ const Table = ({clientInfo}) => {
               <td className="border-t border-b border-zinc-400 p-2">
                 {info.industry}
               </td>
-
               <td className="border-t border-b border-zinc-400 p-2">
                 {info.project}
               </td>
-
               <td className="border-t border-b border-zinc-400 p-2">
                 {info.email}
               </td>
-              <td className="border-t border-b border-zinc-400 p-2 bg-emerald-500/10 text-emerald-500 text-center">
-                {info.status}
+              <td className="border-t border-b border-zinc-400  text-center">
+                <span
+                  className="p-2 rounded-md font-bold"
+                  style={{
+                    color: ClientStatusConfig[info.status]?.textColor,
+                    background: ClientStatusConfig[info.status]?.bgColor,
+                  }}
+                >
+                  {ClientStatusConfig[info.status]?.label}
+                </span>
               </td>
               <td className="border-t border-b border-zinc-400 p-2">
                 {info.notes}
@@ -141,24 +187,52 @@ const Table = ({clientInfo}) => {
               <td className="border-t border-b border-zinc-400 p-2 text-center relative">
                 {" "}
                 <BsThreeDotsVertical
-                onClick={() => setOptionBox(optionBox === info.id ? null : info.id) }
+                  onClick={() =>
+                    setOptionBox(optionBox === info.id ? null : info.id)
+                  }
                   size={30}
                   className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
                 />
-
-              {optionBox === info.id && (<div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col rounded-lg p-2">
-                  <button onClick={() => { setSelectedClient(info); setOpenEdit(true); }} className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer" ><FiEdit /> რედაქტირება</button>
-                  <button onClick={() => {deleteInfo( "clients", info.id, "/clients")}}  className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"><MdDelete /> წაშლა</button>
-                </div> )}  
+                {optionBox === info.id && (
+                  <div className="bg-white border border-zinc-400 absolute top-10 right-5 z-10 text-[16px] flex flex-col rounded-lg p-2">
+                    <button
+                      onClick={() => {
+                        setSelectedClient(info);
+                        setOpenEdit(true);
+                      }}
+                      className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer"
+                    >
+                      <FiEdit /> რედაქტირება
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteInfo("clients", info.id, "/clients");
+                        setDeleteSuccess(true);
+                        setTimeout(() => setDeleteSuccess(false), 3000);
+                      }}
+                      className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"
+                    >
+                      <MdDelete /> წაშლა
+                    </button>
+                  </div>
+                )}
               </td>
             </tr>
           ))}
-
         </tbody>
-
       </table>
-          {clientInfo.length === 0? ( <p className="text-center text-zinc-400 mt-5">კლიენტები არ არის დამატებული</p>) : null}
-
+      {clientInfo.length === 0 ? (
+        <p className="text-center text-zinc-400 mt-5">
+          კლიენტები არ არის დამატებული
+        </p>
+      ) : null}
+<div className="relative overflow-hidden">
+<AnimatePresence>
+      {success && <AlertComp type="success" text="კლიენტი წარმატებით დაემატა!" />}
+      {editSuccess && <AlertComp type="update" text={"კლიენტი წარმატებით განახლდა"}/>}
+      {deleteSuccess && <AlertComp type="delete" text={"კლიენტი წარმატებით წაიშალა"}/>}
+</AnimatePresence>
+</div>
     </>
   );
 };
