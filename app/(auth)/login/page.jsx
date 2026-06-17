@@ -34,8 +34,9 @@ const Page = () => {
 };
 
   return (
-    <div className='h-screen flex items-center'>
-      <div className='flex flex-col w-full max-w-100 mx-auto gap-2 border border-zinc-400 rounded-md py-4 px-2'>
+    <div className='h-screen flex items-center bg-[url(/bgg.jpg)] bg-center bg-no-repeat bg-cover'>
+       <div className='absolute inset-0 bg-black/30 z-10 '/>
+      <div className='flex flex-col w-full max-w-100 mx-auto gap-2 border border-zinc-400 rounded-2xl py-4 px-6 bg-white z-50 '>
         <h1 className='text-center text-2xl mb-5'>შესვლა</h1>
 
         <label htmlFor="email">მომხმარებლის მეილი</label>
