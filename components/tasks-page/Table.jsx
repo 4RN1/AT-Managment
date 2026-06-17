@@ -31,7 +31,10 @@ const priorityConfig = {
   low: { label: "დაბალი", color: "#22c55e", bg: "rgba(34, 197, 94, 0.1)" },
   medium: { label: "საშუალო", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.1)" },
   high: { label: "მაღალი", color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
-  urgent: {label: "სასწრაფო", color: "#7c3aed",bg: "rgba(124, 58, 237, 0.1)",
+  urgent: {
+    label: "სასწრაფო",
+    color: "#7c3aed",
+    bg: "rgba(124, 58, 237, 0.1)",
   },
 };
 
@@ -41,20 +44,20 @@ const Table = ({
   headingNumBgColor,
   headingNumColor,
   length,
-  assignees
+  assignees,
 }) => {
   const [optionBox, setOptionBox] = useState(null);
   const [descOpenModal, setDescOpenModal] = useState(false);
   const [selectedTasks, setSelectedTasks] = useState(null);
   const [statusDropdown, setStatusDropdown] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false)
-  const [success, setSuccess] = useState(false);
-  const [editSuccess, setEditSuccess] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [statusSuccess, setStatusSuccess] = useState(false)
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (e.target.closest(".option-trigger")) return; // ignore the toggle button
+      if (e.target.closest(".option-trigger")) return;
       setOptionBox(null);
     }
 
@@ -64,7 +67,7 @@ const Table = ({
 
   return (
     <div>
-      <div className="my-5  border border-zinc-400  mx-10 rounded-lg">
+      <div className="my-5 border border-zinc-400 mx-10 rounded-lg">
         <div className=" border-b border-zinc-400">
           <h2 className="font-medium py-2 px-2">
             {title}{" "}
@@ -85,90 +88,97 @@ const Table = ({
           ))}
         </div>
 
-        {
-          taskData.map((task, index) => (
-            <div
-              key={index}
-              className="flex justify-between items-center font-medium text-sm text-black px-2 border-t border-zinc-400 py-3 hover:bg-zinc-400/10 gap-5"
+        {taskData.map((task, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center font-medium text-sm text-black px-2 border-t border-zinc-400 py-3 hover:bg-zinc-400/10 gap-5"
+          >
+            <p className="w-full max-w-50">{`#-${task.id.slice(1, 8)}`}</p>
+            <p className="w-full max-w-50">{task.title}</p>
+            <button
+              onClick={() => {
+                (setDescOpenModal(true), setSelectedTasks(task));
+              }}
+              className="w-full max-w-50 py-1 bg-blue-500/10 text-blue-500 hover:text-blue-600 hover:bg-blue-600/10 rounded-lg cursor-pointer"
             >
-              <p className="w-full max-w-50">{`#-${task.id.slice(1, 8)}`}</p>
-              <p className="w-full max-w-50">{task.title}</p>
-              <button
-                onClick={() => {
-                  (setDescOpenModal(true), setSelectedTasks(task));
-                }}
-                className="w-full max-w-50 py-1 bg-blue-500/10 text-blue-500 hover:text-blue-600 hover:bg-blue-600/10 rounded-lg cursor-pointer"
-              >
-                ნახვა
-              </button>
-              <p className="w-full max-w-50">{task.assigned?.name}</p>
-              <p
-                className="w-full max-w-50 py-1 rounded-lg text-center text-sm font-semibold"
-                style={{
-                  color: priorityConfig[task.priority]?.color,
-                  background: priorityConfig[task.priority]?.bg,
-                }}
-              >
-                {priorityConfig[task.priority]?.label}
-              </p>
-              <p className="w-full max-w-50">{formatDate(task.created_at)}</p>
-              <p className="w-full max-w-50">{formatDate(task.due_date)}</p>
-              <p className="w-full max-w-50">{task.created_by?.name}</p>
+              ნახვა
+            </button>
+            <p className="w-full max-w-50">{task.assigned?.name}</p>
+            <p
+              className="w-full max-w-50 py-1 rounded-lg text-center text-sm font-semibold"
+              style={{
+                color: priorityConfig[task.priority]?.color,
+                background: priorityConfig[task.priority]?.bg,
+              }}
+            >
+              {priorityConfig[task.priority]?.label}
+            </p>
+            <p className="w-full max-w-50">{formatDate(task.created_at)}</p>
+            <p className="w-full max-w-50">{formatDate(task.due_date)}</p>
+            <p className="w-full max-w-50">{task.created_by?.name}</p>
 
-              
-        
-              <div className="w-full max-w-50 flex justify-end relative gap-2">
-                <TbArrowsExchange
-                  onClick={() =>
-                    setStatusDropdown(
-                      statusDropdown === task.id ? null : task.id,
-                    )
-                  }
-                  size={30}
-                  className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
-                />
+            <div className="w-full max-w-50 flex justify-end relative gap-2">
+              <TbArrowsExchange
+                onClick={() =>
+                  setStatusDropdown(statusDropdown === task.id ? null : task.id)
+                }
+                size={30}
+                className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
+              />
 
-                <BsThreeDotsVertical
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOptionBox(optionBox === task.id ? null : task.id);
+              <BsThreeDotsVertical
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOptionBox(optionBox === task.id ? null : task.id);
+                }}
+                size={30}
+                className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
+              />
+
+              {/* OPTION BOX */}
+              {optionBox === task.id && (
+                <div className="bg-white border border-zinc-400 absolute top-10 right-5 z-20 text-[16px] flex flex-col option-trigger cursor-pointer ">
+                  <button
+                    onClick={() => {
+                      setSelectedTasks(task);
+                      setOpenEdit(true);
+                    }}
+                    className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer"
+                  >
+                    <FiEdit /> რედაქტირება
+                  </button>
+                  <button
+                    onClick={() => {
+                      deleteInfo("tasks", task.id, "/tasks");
+                      setDeleteSuccess(true);
+                      setTimeout(() => {
+                        setDeleteSuccess(false);
+                      }, 3000);
+                    }}
+                    className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"
+                  >
+                    <MdDelete /> წაშლა
+                  </button>
+                </div>
+              )}
+              {/* ----------------------------------- */}
+              {/* DROPDOWN */}
+
+              {statusDropdown === task.id && (
+                <ChangeStatusDropdown
+                  onClose={() => setStatusDropdown(null)}
+                  taskId={task.id}
+                  onSuccess={() => {
+                    setStatusSuccess(true)
+                    setTimeout(() => {
+                    setStatusSuccess(false)
+                    }, 3000);
                   }}
-                  size={30}
-                  className="cursor-pointer p-1 rounded-md text-black border border-zinc-400"
                 />
-
-                {/* OPTION BOX */}
-                {optionBox === task.id && (
-                  <div className="bg-white border border-zinc-400 absolute top-10 right-5 z-20 text-[16px] flex flex-col option-trigger cursor-pointer ">
-                    <button
-                      onClick={() => {
-                        setSelectedTasks(task);
-                        setOpenEdit(true);
-                      }}
-                      className="flex items-center hover:bg-black/10 p-2 text-blue-500 cursor-pointer"
-                    >
-                      <FiEdit /> რედაქტირება
-                    </button>
-                    <button
-                      onClick={() => {
-                        deleteInfo("tasks", task.id, "/tasks");
-                      }}
-                      className="flex items-center hover:bg-black/10 p-2 text-red-500 cursor-pointer"
-                    >
-                      <MdDelete /> წაშლა
-                    </button>
-                  </div>
-                )}
-                {/* ----------------------------------- */}
-                {/* DROPDOWN */}
-
-               {statusDropdown === task.id && (
-  <ChangeStatusDropdown onClose={() => setStatusDropdown(null)} taskId={task.id} />)}
-
-              </div>
+              )}
             </div>
-          ))
-} 
+          </div>
+        ))}
       </div>
 
       {descOpenModal && setSelectedTasks && (
@@ -180,19 +190,33 @@ const Table = ({
         />
       )}
 
-      {selectedTasks && openEdit && <EditTaskModal assignees={assignees} client={selectedTasks} onClose={() => setOpenEdit(false)}/> }
+      {selectedTasks && openEdit && (
+        <EditTaskModal
+          assignees={assignees}
+          client={selectedTasks}
+          onClose={() => setOpenEdit(false)}
+          onSuccess={() => {
+            setEditSuccess(true);
+            setTimeout(() => {
+              setEditSuccess(false);
+            }, 3000);
+          }}
+        />
+      )}
 
-        <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden">
         <AnimatePresence>
-          {success && (
-            <AlertComp type="success" text="კლიენტი წარმატებით დაემატა!" />
-          )}
           {editSuccess && (
-            <AlertComp type="update" text={"კლიენტი წარმატებით განახლდა"} />
+            <AlertComp type="update" text={"თასქი წარმატებით განახლდა"} />
           )}
           {deleteSuccess && (
-            <AlertComp type="delete" text={"კლიენტი წარმატებით წაიშალა"} />
+            <AlertComp type="delete" text={"თასქი წარმატებით წაიშალა"} />
           )}
+          {
+            statusSuccess && (
+              <AlertComp type = "status" text = "თასქის სტატუსი წარმატებით განახლდა" />
+            )
+          }
         </AnimatePresence>
       </div>
     </div>

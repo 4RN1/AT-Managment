@@ -33,6 +33,7 @@ const EditDealsModal = ({ clients = [], deal, onClose, onSuccess }) => {
 
     try {
       const formData = {
+        id: deal.id,
         client_id: e.target.client_id.value,
         title: e.target.service.value,
         type: e.target.type.value,
@@ -40,8 +41,9 @@ const EditDealsModal = ({ clients = [], deal, onClose, onSuccess }) => {
         status: e.target.status.value,
         amount: e.target.amount.value,
       };
-      await edit("deals", deal.id, formData, "/deals");
+      await edit("deals",  formData, "/deals");
       onClose();
+      await onSuccess();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -69,11 +71,11 @@ const EditDealsModal = ({ clients = [], deal, onClose, onSuccess }) => {
               <label className="text-sm text-zinc-500">კლიენტი</label>
               <select
                 name="client_id"
-                defaultValue={deal?.name}
+                defaultValue={deal?.client_id}
                 className="border border-zinc-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-emerald-500"
               >
                 {clients.map((client) => (
-                  <option key={client.id} value={client.id}>
+                  <option key={client.id} value={client.id} >
                     {client.company}
                   </option>
                 ))}

@@ -1,33 +1,42 @@
 'use client'
 
 import { edit } from '@/action/ClientActions'
-import React from 'react'
+import React, { useState } from 'react'
 import { FaRegCheckCircle } from 'react-icons/fa'
 import { LuCircleDashed, LuLoaderCircle } from 'react-icons/lu'
 import { TbClockOff } from 'react-icons/tb'
 
-const ChangeStatusDropdown = ({ onClose, taskId }) => {
+const ChangeStatusDropdown = ({ onClose, taskId, onSuccess }) => {
+
 
   const buttons = [
     {
       label: 'შესასრულებელი',
       icon: <LuCircleDashed color='blue' />,
-      action: () => edit("tasks", {id: taskId, status: "todo" }, "/tasks"),
+      action: () => {edit("tasks", {id: taskId, status: "todo" }, "/tasks")
+      onSuccess();
+    }
     },
     {
       label: 'პროცესშია',
       icon: <LuLoaderCircle color='orange' />,
-      action: () => edit("tasks", {id: taskId, status: "in_progress" }, "/tasks"),
+      action: () => {edit("tasks", {id: taskId, status: "in_progress" }, "/tasks")
+    onSuccess();
+    },
     },
     {
       label: 'შესრულებული',
       icon: <FaRegCheckCircle color='green' />,
-      action: () => edit("tasks", {id: taskId, status: "done" }, "/tasks"),
+      action: () => {edit("tasks", {id: taskId, status: "done" }, "/tasks")
+    onSuccess();
+    },
     },
     {
       label: 'გადაცდა',
       icon: <TbClockOff color='red' />,
-      action: () => edit("tasks", {id: taskId, status: "cancelled" }, "/tasks"),
+      action: () => {edit("tasks", {id: taskId, status: "cancelled" }, "/tasks")
+    onSuccess();
+    },
     },
   ]
 

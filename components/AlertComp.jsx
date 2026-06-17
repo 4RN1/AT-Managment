@@ -7,6 +7,8 @@ const styles = {
   success: "bg-green-300 border-green-500 text-green-900",
   delete: "bg-red-300 border-red-500 text-red-900",
   update: "bg-blue-300 border-blue-500 text-blue-900",
+  status: "bg-yellow-300 border-yellow-500 text-yellow-900",
+
 }
 
 const AlertComp = ({ text, type = "success" }) => {

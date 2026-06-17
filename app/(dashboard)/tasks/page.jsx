@@ -1,43 +1,26 @@
 import { get, getWhere } from '@/action/ClientActions';
-import AddTasksModal from '@/components/tasks-page/AddTasksModal';
-import StatCard from '@/components/tasks-page/StatCard'
-import Table from '@/components/tasks-page/Table';
-import React from 'react'
-
-
-
-
+import Tasks from '@/components/tasks-page/Tasks';
 
 const page = async () => {
+  const columns = `*, assigned:assigned_to(name), author:created_by(name)`;
+  const profiles = await get("profiles", "id, name");
+  const getAll = await get("tasks", "id");
 
-  // status = todo , in_progress, done, cancelled (overdue)
-    const getAll  = await get("tasks", "id")
-
-
-  const profiles = await get("profiles", "id, name")
-  const columns = `*, assigned:assigned_to(name), author:created_by(name)`
-
-  const getToBeDoneTasks   = await getWhere("tasks", "status", "todo",        columns)
-  const getInProgressTasks = await getWhere("tasks", "status", "in_progress", columns)
-  const getDoneTasks       = await getWhere("tasks", "status", "done",        columns)
-  const getOverdueTasks    = await getWhere("tasks", "status", "cancelled",   columns)
+  const todo       = await getWhere("tasks", "status", "todo",        columns);
+  const inProgress = await getWhere("tasks", "status", "in_progress", columns);
+  const done       = await getWhere("tasks", "status", "done",        columns);
+  const overdue    = await getWhere("tasks", "status", "cancelled",   columns);
 
   return (
-    <>
-      <AddTasksModal assignees={profiles} />
-      <StatCard
-        სულ={getAll.length}
-        შესასრულებელი={getToBeDoneTasks.length}
-        პროცესშია={getInProgressTasks.length}
-        შესრულებული={getDoneTasks.length}
-        გადაცდა={getOverdueTasks.length} 
-      />
-      <Table title="შესასრულებელი" length={getToBeDoneTasks.length} taskData={getToBeDoneTasks}   headingNumBgColor="rgba(59, 130, 246, 0.08)"  headingNumColor="#3b82f6"  assignees={profiles}/>
-      <Table title="პროცესშია"    length={getInProgressTasks.length}  taskData={getInProgressTasks} headingNumBgColor="rgba(245, 158, 11, 0.08)" headingNumColor="#f59e0b"  assignees={profiles}/>
-      <Table title="შესრულებული"   length={getDoneTasks.length} taskData={getDoneTasks}       headingNumBgColor="rgba(34, 197, 94, 0.08)"  headingNumColor="#22c55e"  assignees={profiles}/>
-      <Table title="გადაცდა"     length={getOverdueTasks.length}   taskData={getOverdueTasks}    headingNumBgColor="rgba(239, 68, 68, 0.08)"  headingNumColor="#ef4444"  assignees={profiles}/>
-    </>
-  )
-}
+    <Tasks
+      profiles={profiles}
+      allCount={getAll.length}
+      todo={todo}
+      inProgress={inProgress}
+      done={done}
+      overdue={overdue}
+    />
+  );
+};
 
-export default page
+export default page;

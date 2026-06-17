@@ -11,7 +11,7 @@ const priorities = [
   { value: "urgent", label: "სასწრაფო", color: "#7c3aed" },
 ];
 
-const AddTasksModal = ({ assignees = [] }) => {
+const AddTasksModal = ({ assignees = [] , onSuccess}) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -31,6 +31,7 @@ const AddTasksModal = ({ assignees = [] }) => {
       };
       await add("tasks", formData, "/tasks");
       setOpen(false);
+      onSuccess();
     } catch (err) {
       setError(err.message);
     } finally {

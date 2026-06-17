@@ -73,20 +73,7 @@ const Table = ({ info, clients }) => {
 
   return (
     <>
-      {openEdit && (
-        <EditDealsModal
-          deal={selectedClient} // ← was client={selectedClient}
-          clients={clients} // ← was client={selectedClient}
-          onClose={() => {
-            setOpenEdit(false);
-            setSelectedClient(null);
-          }}
-          onSuccess={() => {
-            setSuccess(true);
-            setTimeout(() => setEditSuccess(false), 3000);
-          }}
-        />
-      )}
+     
       {/* Search & Add Client Button */}
 
       <div className="py-5  flex flex-col gap-5 max-w-380 w-full mx-auto">
@@ -103,7 +90,7 @@ const Table = ({ info, clients }) => {
             </div>
             <hr className="h-5 border-l border-zinc-400 w-0" />
 
-            <Button content={"განახლება"} action={null} icon={<TfiReload />} />
+            <Button content={"განახლება"} action={null} icon={<TfiReload/>} />
           </div>
 
           <button
@@ -207,7 +194,7 @@ const Table = ({ info, clients }) => {
                       <FiEdit /> რედაქტირება
                     </button>
                     <button
-                      onClick={() => {
+                      onClick={ () => {
                         deleteInfo("deals", info.id, "/deals");
                         setDeleteSuccess(true)
                         setTimeout(() => setDeleteSuccess(false), 3000);
@@ -230,21 +217,36 @@ const Table = ({ info, clients }) => {
       )}
       {open && (
         <AddDealsModal clients={clients} onClose={() => setOpen(false)} onSuccess={()=>{ setSuccess(true)
-          setTimeout(() => setEditSuccess(false), 3000);
+          setTimeout(() => setSuccess(false), 3000);
         }} />
+      )}
+
+       {openEdit && (
+        <EditDealsModal
+          deal={selectedClient} // ← was client={selectedClient}
+          clients={clients} // ← was client={selectedClient}
+          onClose={() => {
+            setOpenEdit(false);
+            setSelectedClient(null);
+          }}
+          onSuccess={() => {
+            setEditSuccess(true);
+            setTimeout(() => setEditSuccess(false), 3000);
+          }}
+        />
       )}
             
 
       <div className="relative overflow-hidden">
         <AnimatePresence>
           {success && (
-            <AlertComp type="success" text="კლიენტი წარმატებით დაემატა!" />
+            <AlertComp type="success" text="ტრანზაქცია წარმატებით დაემატა!" />
           )}
           {editSuccess && (
-            <AlertComp type="update" text={"კლიენტი წარმატებით განახლდა"} />
+            <AlertComp type="update" text={"ტრანზაქცია წარმატებით განახლდა"} />
           )}
           {deleteSuccess && (
-            <AlertComp type="delete" text={"კლიენტი წარმატებით წაიშალა"} />
+            <AlertComp type="delete" text={"ტრანზაქცია წარმატებით წაიშალა"} />
           )}
         </AnimatePresence>
       </div>

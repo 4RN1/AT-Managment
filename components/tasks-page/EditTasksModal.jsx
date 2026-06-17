@@ -21,7 +21,7 @@ const priorities = [
   { value: "urgent", label: "სასწრაფო", color: "#7c3aed" },
 ];
 
-const EditTaskModal = ({ client, onClose , assignees}) => {
+const EditTaskModal = ({ client, onClose , assignees, onSuccess}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -54,6 +54,7 @@ const handleSubmit = async (e) => {
     try {
       await edit("tasks" , formData , "/tasks");
       onClose();
+      onSuccess();
     } catch (err) {
       setError(err.message ?? "Something went wrong");
       console.log(error)
