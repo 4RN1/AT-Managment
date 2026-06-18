@@ -3,7 +3,7 @@ import React from "react";
 
 const Priority = ({ clientName = "client", priorityStatus = "მაღალი" }) => {
   return (
-    <div className="bg-white rounded-2xl max-w-80  min-h-100  py-4 border border-zinc-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+    <div className="bg-white rounded-2xl w-full max-w-80  min-h-100  py-4 border border-zinc-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
       <h2 className="text-md text-center font-medium text-zinc-700">
         პრიორიტეტული პროექტები
       </h2>
@@ -36,47 +36,6 @@ const Priority = ({ clientName = "client", priorityStatus = "მაღალი"
             <p className="text-xs text-zinc-400">TBC Bank · ⏰ 24 მაისი</p>
           </div>
         </div>
-
-         <div className="flex flex-col gap-1 py-3 border-b border-zinc-100">
-          <div className="flex justify-between items-center">
-            <p className="font-semibold text-sm text-zinc-800">
-              საიტის დიზაინი
-            </p>
-            <p className="p-1.5 bg-green-400/30 text-green-600 font-medium rounded-md text-xs">
-              დაბალი
-            </p>
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-xs text-zinc-400">TBC Bank · ⏰ 24 მაისი</p>
-          </div>
-        </div>
-         <div className="flex flex-col gap-1 py-3 border-b border-zinc-100">
-          <div className="flex justify-between items-center">
-            <p className="font-semibold text-sm text-zinc-800">
-              საიტის დიზაინი
-            </p>
-            <p className="p-1.5 bg-red-400/30 text-red-600 font-medium rounded-md text-xs">
-              მაღალი
-            </p>
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-xs text-zinc-400">TBC Bank · ⏰ 24 მაისი</p>
-          </div>
-        </div>
-         <div className="flex flex-col gap-1 py-3 border-b border-zinc-100">
-          <div className="flex justify-between items-center">
-            <p className="font-semibold text-sm text-zinc-800">
-              საიტის დიზაინი
-            </p>
-            <p className="p-1.5 bg-yellow-400/30 text-yellow-600 font-medium rounded-md text-xs">
-              საშუალო
-            </p>
-          </div>
-          <div className="flex justify-between items-center">
-            <p className="text-xs text-zinc-400">TBC Bank · ⏰ 24 მაისი</p>
-          </div>
-        </div>
-
       </div>
     </div>
   );

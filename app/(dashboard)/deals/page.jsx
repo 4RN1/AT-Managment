@@ -10,9 +10,9 @@ const clients = await get("clients", " id , company")
 
 
   return (
-        <>
+        <div>
         <Table  info={info} clients={clients}/>
-        </>
+        </div>
   )
 }
 
