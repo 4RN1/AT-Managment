@@ -11,12 +11,21 @@ export const  getSupabase = async () => {
 };
 
 // GET DATA ---------------------
-export const get = async (table, columns = "*") => {
+export const get = async (table, columns = "*", limit = null, orderBy = null) => {
   const supabase = await getSupabase();
-  const { data: result, error } = await supabase.from(table).select(columns);
+  let query = supabase.from(table).select(columns);
+
+  if (orderBy) query = query.order(orderBy.column, { ascending: orderBy.ascending ?? true });
+
+  if (limit) query = query.limit(limit);
+
+  const { data: result, error } = await query;
+  
   if (error) throw new Error(error.message);
   return result;
 };
+
+
 
 
 // ADD DATA ---------------------

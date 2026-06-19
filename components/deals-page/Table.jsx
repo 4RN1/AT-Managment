@@ -48,12 +48,11 @@ const typeConfig = {
 };
 
 const statusConfig = {
-  pending: { label: "მუშავდება", textColor: "#f59e0b", icon: GiSandsOfTime },
-  paid: { label: "გადახდილია", textColor: "#22c55e", icon: FaRegCircleCheck },
+  pending: { label: "მუშავდება", textColor: "#f59e0b"},
+  paid: { label: "გადახდილია", textColor: "#22c55e"},
   cancelled: {
     label: "გაუქმდა",
     textColor: "#ef4444",
-    icon: IoCloseCircleOutline,
   },
 };
 const paymentMethodConfig = {
@@ -132,7 +131,7 @@ const Table = ({ info, clients }) => {
               key={info.id}
               className="text-[13px] lg:text-[15px] text-zinc-800 font-medium border border-zinc-600"
             >
-              <td className="p-2">{formatDate(info.created_at)}</td>
+              <td className="p-2"  suppressHydrationWarning>{formatDate(info.created_at)}</td>
               <td className="p-2">{info.title}</td>
               <td className="p-2">{info.clients?.company}</td>
               <td className="p-2 ">

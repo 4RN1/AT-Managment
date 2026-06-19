@@ -113,8 +113,8 @@ const Table = ({
             >
               {priorityConfig[task.priority]?.label}
             </p>
-            <p className="w-full max-w-50">{formatDate(task.created_at)}</p>
-            <p className="w-full max-w-50">{formatDate(task.due_date)}</p>
+            <p className="w-full max-w-50" suppressHydrationWarning >{formatDate(task.created_at)}</p>
+            <p className="w-full max-w-50" suppressHydrationWarning>{formatDate(task.due_date)}</p>
             <p className="w-full max-w-50">{task.created_by?.name}</p>
 
             <div className="w-full max-w-50 flex justify-end relative gap-2">

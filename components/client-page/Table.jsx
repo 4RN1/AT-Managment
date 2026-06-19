@@ -181,7 +181,7 @@ const Table = ({ clientInfo }) => {
               <td className="border-t border-b border-zinc-400 p-2">
                 {info.notes}
               </td>
-              <td className="border-t border-b border-zinc-400 p-2">
+              <td className="border-t border-b border-zinc-400 p-2"  suppressHydrationWarning>
                 {formatDate(info.created_at)}
               </td>
               <td className="border-t border-b border-zinc-400 p-2 text-center relative">

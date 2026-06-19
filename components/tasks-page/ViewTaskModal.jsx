@@ -1,3 +1,4 @@
+"use client"
 import { formatDate } from "@/utils/formatDate";
 import React, { useState } from "react";
 import { FcHighPriority } from "react-icons/fc";
@@ -108,12 +109,12 @@ const ViewTaskModal = ({ task, onClose }) => {
 
           <div className="flex justify-between max-w-70 items-center">
             <p className="text-sm text-zinc-500 flex items-center gap-2"><MdAssignmentAdd  size={20} color="green"/> შეიქმნა</p>
-            <p className="font-medium">{formatDate(formData.created_at)}</p>
+            <p className="font-medium"  suppressHydrationWarning>{formatDate(formData.created_at)}</p>
           </div>
 
           <div className="flex justify-between max-w-70 items-center mb-7">
             <p className="text-sm text-zinc-500 flex items-center gap-2"><LuCalendarClock  size={20} color="red"/>ვადა</p>
-            <p className="font-medium">{formatDate(formData.due_date)}</p>
+            <p className="font-medium"  suppressHydrationWarning>{formatDate(formData.due_date)}</p>
           </div>
 
           <div className="flex flex-col gap-2 ">
