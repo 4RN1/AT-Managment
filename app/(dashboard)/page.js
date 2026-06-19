@@ -6,6 +6,8 @@ import { LuTrendingDown, LuTrendingUp } from "react-icons/lu";
 import { IoIosConstruct } from "react-icons/io";
 import { get } from "@/action/ClientActions";
 import TransactionList from "@/components/dashboard/TransactionList";
+import { GiMoneyStack } from "react-icons/gi";
+import { expense, income, netIncome } from "@/action/dashboardActions";
 
 
 
@@ -16,6 +18,10 @@ export default async function Home() {
 
   const transactions = await get("deals" , " id,  created_at, payment_method, amount, status , clients (company)", 10, {column: "created_at" , ascending:true})
 
+  
+const incomeValue = await income();
+const expenseValue = await expense();
+const netIncomeValue = await netIncome();
 
   return (
 <div className="min-h-screen px-10 py-10 bg-zinc-50 space-y-5">
@@ -24,10 +30,11 @@ export default async function Home() {
       <div className="grid grid-cols-5 gap-5 items-start ">
         
         <div className="grid grid-cols-2 col-span-3 gap-5">
-          <StatCard title="სულ ბალანსი" stat={6700} icon={MdOutlineAccountBalanceWallet} bgColor="#EEF2FF" iconColor="#6366f1"/>
-          <StatCard title="სულ შემოსავალი" stat={12000} icon={LuTrendingUp} bgColor="#ECFDF9" iconColor="#22c55e"/>
-          <StatCard title="სულ ხარჯი" stat={5300} icon={LuTrendingDown} bgColor="#FFF1F2" iconColor="#f43f5e"/>
-          <StatCard title="მალე..." stat={0} icon={IoIosConstruct} bgColor="#F5F3FF" iconColor="#a855f7"/>
+          <StatCard title="სულ შემოსავალი" stat={incomeValue} icon={LuTrendingUp} bgColor="#ECFDF9" iconColor="#22c55e"/>
+          <StatCard title="სულ ხარჯი" stat={expenseValue} icon={LuTrendingDown} bgColor="#FFF1F2" iconColor="#f43f5e"/>
+          <StatCard title="მოგება " stat={netIncomeValue} icon={GiMoneyStack} bgColor="#CCFFCC" iconColor="#008000"/>
+          <StatCard title="მალე..." stat={0} icon={MdOutlineAccountBalanceWallet} bgColor="#EEF2FF" iconColor="#6366f1"/>
+
         </div>
         <div className="col-span-2">
           <Calendar />
