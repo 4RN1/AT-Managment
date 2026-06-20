@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AT-Management
+
+A full-stack business management dashboard built with **Next.js** and **Supabase**.task tracking, client management, and financial deal monitoring in one place. UI is in Georgian (ქართული).
+
+## Features
+
+- **Dashboard** — KPI cards (total income, expenses, net profit), income/expense chart by month, recent tasks, and transaction list
+- **Tasks** — Kanban board with four status columns: To Do, In Progress, Done, Cancelled. Assign tasks to team members, set priorities and due dates
+- **Clients** — CRM table for managing business contacts with status tracking (active, inactive, archived)
+- **Deals** — Financial transaction log with income/expense types, payment methods, and status (pending, paid, cancelled)
+- **Auth** — Email/password login via Supabase Auth with cookie-based session management
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Server Actions, SSR)
+- [React 19](https://react.dev)
+- [Supabase](https://supabase.com) (PostgreSQL, Auth, Row-Level Security)
+- [Tailwind CSS 4](https://tailwindcss.com)
+- [Recharts](https://recharts.org) — income/expense chart
+- [Motion](https://motion.dev) — animations
+- [shadcn/ui](https://ui.shadcn.com) + [Base UI](https://base-ui.com)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A [Supabase](https://supabase.com) project
+
+### Install
+
+```bash
+git clone https://github.com/4RN1/AT-Managment.git
+cd AT-Managment
+npm install
+```
+
+### Environment Variables
+
+Create a `.env.local` file in the root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://<your-project>.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<your-anon-key>
+```
+
+### Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). You'll be redirected to `/login` if not authenticated.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  (auth)/login/       # Login page
+  (dashboard)/        # Protected pages (layout with sidebar + navbar)
+    page.js           # Main dashboard
+    tasks/            # Task board
+    clients/          # Client table
+    deals/            # Financial deals table
+action/
+  ClientActions.js    # Generic CRUD server actions (get, add, edit, delete…)
+  dashboardActions.js # Financial aggregates (income, expense, netIncome)
+  logout.js           # Sign-out action
+components/
+  navigation/         # Sidebar, Navbar
+  dashboard/          # StatCard, Priority, TransactionList
+  tasks-page/         # Tasks board, modals, status dropdown
+  client-page/        # Client table and modals
+  deals-page/         # Deals table and modals
+  Chart.jsx           # Recharts bar chart
+  Calendar.jsx        # Date picker
+utils/supabase/       # Browser, server, and middleware Supabase clients
+```
 
-## Learn More
+## Database Tables
 
-To learn more about Next.js, take a look at the following resources:
+| Table | Key Columns |
+|---|---|
+| `profiles` | `id` (FK → auth.users), `name` |
+| `tasks` | `id`, `title`, `description`, `priority`, `status`, `due_date`, `assigned_to`, `created_by` |
+| `clients` | `id`, `name`, `company`, `industry`, `project`, `email`, `status` |
+| `deals` | `id`, `amount`, `type` (income/expense), `status`, `payment_method`, `client_id` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The easiest way to deploy is [Vercel](https://vercel.com). Import the repo, add the two environment variables, and deploy.
