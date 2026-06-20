@@ -45,12 +45,12 @@ const expenseValue = await expense();
 const netIncomeValue = await netIncome();
 
   return (
-<div className="min-h-screen px-10 py-10 bg-zinc-50 space-y-5">
+<div className="min-h-screen px-3  md:px-10 py-10 bg-zinc-100 space-y-5">
 
       {/* TOP SECTION */}
-      <div className="grid grid-cols-5 gap-5 items-start ">
+      <div className="grid  grid-cols-1  sm:grid-cols-3 lg:grid-cols-5 md:gap-5 max-md:gap-y-5ყ items-start w-full">
         
-        <div className="grid grid-cols-2 col-span-3 gap-5">
+        <div className="grid    grid-cols-1 lg:grid-cols-2    lg:col-span-3 gap-5">
           <StatCard title="სულ შემოსავალი" stat={incomeValue} icon={LuTrendingUp} bgColor="#ECFDF9" iconColor="#22c55e"/>
           <StatCard title="სულ ხარჯი" stat={expenseValue} icon={LuTrendingDown} bgColor="#FFF1F2" iconColor="#f43f5e"/>
           <StatCard title="მოგება " stat={netIncomeValue} icon={GiMoneyStack} bgColor="#CCFFCC" iconColor="#008000"/>
@@ -64,11 +64,11 @@ const netIncomeValue = await netIncome();
       </div>
 
       {/* BOTTOM SECTION */}
-       <div className="grid grid-cols-6 gap-5 items-start">
-        <div className="col-span-2 ">
+       <div className="grid  grid-cols-1  sm:grid-cols-4  lg:grid-cols-6 gap-5 items-start">
+        <div className=" sm:col-span-1 lg:col-span-2 ">
           <Priority tasksInfo={tasks} />
         </div>
-        <div className="col-span-4 gap-5">
+        <div className=" sm:col-span-3  lg:col-span-4 gap-5">
           <TransactionList transactions={transactions}/>
         </div>
        </div>

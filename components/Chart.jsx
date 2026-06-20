@@ -50,7 +50,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 export default function SpendingChart({data}) {
   return (
     <div style={{ background: '#fff', borderRadius: 16, padding: '24px', border: '0.5px solid #e5e7eb' }}>
-      <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Spending Cash</h3>
+      <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>შემოსავალი & ხარჯები</h3>
       <div style={{ display: 'flex', gap: 12, fontSize: 12, color: '#888', marginBottom: 20 }}>
         <span><span style={{ color: '#4CAF7D' }}>●</span>შემოსავალი</span>
         <span><span style={{ color: '#E24B4A' }}>●</span>ხარჯი</span>
