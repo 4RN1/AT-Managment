@@ -28,7 +28,6 @@ const Navbar = ({user = "User"}) => {
           <p className='font-medium'>გამარჯობა, {user}</p>
              <IoIosArrowDown />
              </div>
-       
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-50 ">
         <DropdownMenuGroup>
